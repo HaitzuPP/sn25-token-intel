@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SN25 New Buyers – Wallet Frequency | Pylon Partners</title>
+<!--
+  SN25 Mainframe – New Buyer Tracker. Pylon Partners / TAO Institute.
+  Reads data/sn25-snapshot.json (newWallets), pre-computed daily. Tracks the
+  frequency of new wallets buying SN25 (first-time SN25 stakers), their size,
+  and an unbiased net-new holder count.
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #fff; color: #111; font-size: 13px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  a { color: #1a7a3a; text-decoration: none; } a:hover { text-decoration: underline; }
+  .green { color: #1a7a3a; } .red { color: #c0392b; } .grey { color: #999; }
+  .mono { font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace; font-size: 11px; font-variant-numeric: tabular-nums; }
+  .num { font-variant-numeric: tabular-nums; }
+  .hidden { display: none !important; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  .header { border-bottom: 2px solid #111; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .logo { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: #1a7a3a; text-transform: uppercase; }
+  .dv { width: 1px; height: 22px; background: #ddd; }
+  .h-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+  .h-sub { font-size: 10px; color: #999; letter-spacing: 0.3px; text-transform: uppercase; margin-top: 1px; }
+  .nav { display: flex; align-items: center; gap: 16px; font-size: 11px; }
+  .nav a { color: #555; font-weight: 700; }
+  .nav a.active { color: #1a7a3a; }
+  .freshness { font-size: 11px; color: #999; text-align: right; }
+  .live-dot { display: inline-block; width: 6px; height: 6px; background: #1a7a3a; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+  .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #e0e0e0; }
+  .stat { padding: 16px 22px; border-right: 1px solid #eee; }
+  .stat:last-child { border-right: none; }
+  .stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.13em; color: #888; margin-bottom: 6px; }
+  .stat-main { font-size: 27px; font-weight: 700; line-height: 1; letter-spacing: -0.6px; }
+  .stat-sub { font-size: 11px; color: #888; margin-top: 6px; }
+
+  .body { padding: 20px 24px 44px; display: flex; flex-direction: column; gap: 20px; }
+  .section { border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
+  .section-head { padding: 11px 16px; background: #fafafa; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.11em; color: #333; }
+  .section-meta { font-size: 10px; color: #999; }
+  .foot-note { padding: 9px 16px; border-top: 1px solid #f0f0f0; font-size: 10px; color: #999; background: #fafafa; line-height: 1.5; }
+
+  .toggles { display: flex; gap: 4px; }
+  .tgl { font-family: inherit; font-size: 10px; font-weight: 700; padding: 4px 12px; background: transparent; color: #aaa; border: 1px solid #e0e0e0; border-radius: 4px; cursor: pointer; letter-spacing: 0.3px; }
+  .tgl:hover { color: #111; border-color: #aaa; } .tgl.active { background: #111; color: #fff; border-color: #111; }
+
+  .chart-pad { padding: 16px 18px; }
+  .chart-wrap { position: relative; height: 250px; }
+  .chart-wrap-sm { position: relative; height: 160px; }
+  .chart-cap { font-size: 9px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { padding: 9px 11px; text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: 0.07em; color: #999; font-weight: 700; border-bottom: 1px solid #e8e8e8; background: #fcfcfc; white-space: nowrap; }
+  th.r, td.r { text-align: right; }
+  td { padding: 9px 11px; border-bottom: 1px solid #f4f4f4; vertical-align: middle; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  .tr-hover:hover td { background: #fafff9; }
+  .key-pill { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; color: #222; background: #f0f0f0; padding: 2px 7px; border-radius: 3px; cursor: pointer; }
+  .key-pill:hover { background: #e2e2e2; }
+  .pill { font-size: 8px; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-left: 6px; }
+  .pill-new { color: #1a7a3a; background: #e8f5ec; border: 1px solid #c2e2cd; }
+
+  .state-box { text-align: center; padding: 70px 24px; color: #ccc; }
+  .state-title { font-size: 14px; font-weight: 700; color: #888; margin-bottom: 8px; }
+  .err-box { background: #fdf0f0; border: 1px solid #e3b6b0; color: #c0392b; padding: 16px 18px; border-radius: 6px; font-size: 12px; margin: 20px 24px; }
+  .footer { border-top: 1px solid #eee; padding: 12px 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: 10px; color: #bbb; }
+  .footer a { color: #bbb; } .footer a:hover { color: #1a7a3a; }
+
+  @media (max-width: 640px) {
+    .header { padding: 13px 14px; } .h-sub { display: none; }
+    .stats-bar { grid-template-columns: 1fr 1fr; } .stat { border-bottom: 1px solid #eee; }
+    .stat-main { font-size: 21px; } .body { padding: 14px 14px 30px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-left">
+      <span class="logo">Pylon Partners</span>
+      <div class="dv"></div>
+      <div>
+        <div class="h-title">SN25 New Buyers</div>
+        <div class="h-sub">TAO Institute &middot; New wallet frequency</div>
+      </div>
+    </div>
+    <div class="nav">
+      <a href="./index.html">&larr; Dashboard</a>
+      <a href="./newwallets.html" class="active">New Buyers</a>
+    </div>
+    <div class="freshness"><span class="live-dot"></span><span id="snap-time">Loading…</span></div>
+  </div>
+
+  <div id="loading" class="state-box"><div class="state-title">Loading new-buyer data</div></div>
+  <div id="error" class="hidden"></div>
+
+  <div id="content" class="hidden">
+    <div class="stats-bar" id="stats-bar"></div>
+
+    <div class="body">
+
+      <!-- FREQUENCY -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">New SN25 Buyers &middot; Frequency</span>
+          <div class="toggles" id="freq-toggles">
+            <button class="tgl active" data-g="daily">Daily</button>
+            <button class="tgl" data-g="weekly">Weekly</button>
+          </div>
+        </div>
+        <div class="chart-pad">
+          <div class="chart-cap">New wallets buying SN25 per period (bars) &middot; 7-period moving average (line)</div>
+          <div class="chart-wrap"><canvas id="freq-chart"></canvas></div>
+        </div>
+        <div class="chart-pad" style="border-top:1px solid #f0f0f0;">
+          <div class="chart-cap">New-buyer capital per period (USD at entry size)</div>
+          <div class="chart-wrap-sm"><canvas id="cap-chart"></canvas></div>
+        </div>
+        <div class="foot-note" id="freq-foot"></div>
+      </div>
+
+      <!-- NET NEW HOLDERS -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Net New Holders / Day</span>
+          <span class="section-meta">Unbiased &middot; from total holder count</span>
+        </div>
+        <div class="chart-pad">
+          <div class="chart-cap">Daily change in total SN25 holder count (all wallets, not just top 100)</div>
+          <div class="chart-wrap-sm"><canvas id="netnew-chart"></canvas></div>
+        </div>
+        <div class="foot-note" id="netnew-foot"></div>
+      </div>
+
+      <!-- RECENT BUYERS -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Recent New Buyers</span>
+          <span class="section-meta" id="recent-meta"></span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>Wallet (coldkey)</th><th class="r">Rank</th><th>First bought SN25</th>
+              <th class="r">Days ago</th><th class="r">Alpha held</th><th class="r">Size (USD)</th>
+            </tr></thead>
+            <tbody id="recent-tbody"></tbody>
+          </table>
+        </div>
+        <div class="foot-note">"New buyer" = a watched wallet (top 100 by size) whose first-ever SN25 stake is recorded here. Existing holders adding more are not counted as new.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <div><a href="https://taostats.io/subnets/25/metagraph" target="_blank">SN25 on Taostats &#8599;</a> &middot; Source: Taostats API, pre-computed daily</div>
+    <div id="footer-snap">Pylon Partners &middot; TAO Institute</div>
+  </div>
+</div>
+
+<script>
+'use strict';
+const URL_='./data/sn25-snapshot.json';
+let N=null, TAOUSD=null, CHARTS={}, GRAN='daily';
+
+const fNum=(n,d=0)=>n==null?'–':Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fUsd=n=>n==null?'–':'$'+Math.round(n).toLocaleString();
+const shortKey=k=>k?k.slice(0,6)+'…'+k.slice(-4):'–';
+
+async function load(){
+  try{
+    const r=await fetch(URL_+'?t='+Date.now(),{cache:'no-store'});
+    if(!r.ok) throw new Error('Snapshot not found (HTTP '+r.status+').');
+    const s=await r.json();
+    N=s.newWallets; TAOUSD=s.taoUsd;
+    if(!N) throw new Error('New-buyer data not in this snapshot yet. The daily job will populate it on its next run.');
+    document.getElementById('snap-time').textContent='Snapshot '+new Date(s.generatedAt).toUTCString().replace('GMT','UTC');
+    document.getElementById('footer-snap').textContent='Snapshot '+s.day+' · Pylon Partners';
+    render();
+  }catch(e){ showError(e.message); }
+}
+
+function render(){
+  show('content');
+  renderStats(); renderFreq(); renderCap(); renderNetNew(); renderRecent();
+}
+
+function renderStats(){
+  // prior-7d vs current-7d from daily buckets
+  const today=new Date(); const dayN=d=>{const x=new Date(today);x.setUTCDate(x.getUTCDate()-d);return x.toISOString().slice(0,10);};
+  const cnt=(from,to)=> (N.daily||[]).filter(b=>b.d>from&&b.d<=to).reduce((a,b)=>a+b.count,0);
+  const cur7=N.d7, prev7=cnt(dayN(14),dayN(7));
+  const chg=prev7>0?((cur7-prev7)/prev7*100):null;
+  const card=(v,l,s)=>`<div class="stat"><div class="stat-label">${l}</div><div class="stat-main num">${v}</div><div class="stat-sub">${s}</div></div>`;
+  document.getElementById('stats-bar').innerHTML=
+    card(fNum(N.today),'New buyers today', 'first SN25 stake ≤24h') +
+    card(fNum(N.d7),'New buyers 7d', chg==null?'&nbsp;':`<span class="${chg>=0?'green':'red'}">${chg>=0?'+':''}${chg.toFixed(0)}%</span> vs prior 7d`) +
+    card(N.runRate30!=null?N.runRate30.toFixed(1):'–','30d run-rate / day', fNum(N.d30)+' in 30d') +
+    card(fUsd(N.cap30),'New-buyer capital 30d', fUsd(N.cap7)+' in 7d');
+}
+
+function movingAvg(arr,w){ return arr.map((_,i)=>{ const s=arr.slice(Math.max(0,i-w+1),i+1); return s.reduce((a,b)=>a+b,0)/s.length; }); }
+
+function renderFreq(){
+  const b = GRAN==='daily'? (N.daily||[]) : (N.weekly||[]);
+  const labels=b.map(x=>x.d.slice(5)), counts=b.map(x=>x.count);
+  const ds=[{type:'bar',label:'New buyers',data:counts,backgroundColor:'#1a7a3a',order:2}];
+  if(GRAN==='daily'&&counts.length>2) ds.push({type:'line',label:'7d avg',data:movingAvg(counts,7),borderColor:'#111',borderWidth:1.5,pointRadius:0,tension:0.3,order:1});
+  if(CHARTS.freq)CHARTS.freq.destroy();
+  CHARTS.freq=new Chart(document.getElementById('freq-chart'),{data:{labels,datasets:ds},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:tt()},
+      scales:{x:{grid:{display:false},ticks:tk(8)},y:{grid:{color:'#f5f5f5'},ticks:{...tk(),precision:0},title:{display:true,text:'wallets',font:{size:9,family:'Arial'},color:'#aaa'}}}}});
+}
+function renderCap(){
+  const b = GRAN==='daily'? (N.daily||[]) : (N.weekly||[]);
+  if(CHARTS.cap)CHARTS.cap.destroy();
+  CHARTS.cap=new Chart(document.getElementById('cap-chart'),{type:'bar',
+    data:{labels:b.map(x=>x.d.slice(5)),datasets:[{data:b.map(x=>x.usd),backgroundColor:'#9bbfa8'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:tt(v=>fUsd(v))},
+      scales:{x:{grid:{display:false},ticks:tk(8)},y:{grid:{color:'#f5f5f5'},ticks:{...tk(),callback:v=>'$'+(v>=1000?(v/1000).toFixed(0)+'k':v)}}}}});
+}
+function renderNetNew(){
+  const s=N.netNew||[];
+  document.getElementById('netnew-foot').textContent = s.length<2
+    ? 'Builds from the daily holder-count series. Needs a few days of snapshots before it is meaningful.'
+    : 'Net = new holders minus exits each day, across all SN25 wallets. Unbiased, unlike the cohort above.';
+  if(CHARTS.netnew)CHARTS.netnew.destroy();
+  CHARTS.netnew=new Chart(document.getElementById('netnew-chart'),{type:'bar',
+    data:{labels:s.map(x=>x.d.slice(5)),datasets:[{data:s.map(x=>x.net),backgroundColor:s.map(x=>x.net>=0?'#1a7a3a':'#c0392b')}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:tt()},
+      scales:{x:{grid:{display:false},ticks:tk(8)},y:{grid:{color:'#f5f5f5'},ticks:{...tk(),precision:0}}}}});
+}
+function renderRecent(){
+  const rows=N.recent||[];
+  document.getElementById('recent-meta').textContent=rows.length+' most recent of '+N.resolvedCount+' resolved';
+  document.getElementById('recent-tbody').innerHTML = rows.map(r=>`<tr class="tr-hover">
+    <td><span class="key-pill" onclick="navigator.clipboard&&navigator.clipboard.writeText('${r.ck}')" title="${r.ck}">${shortKey(r.ck)}</span>
+      <a href="https://taostats.io/coldkey/${r.ck}" target="_blank" style="font-size:9px;margin-left:3px;">↗</a>${r.days<=7?'<span class="pill pill-new">NEW</span>':''}</td>
+    <td class="r mono">#${r.rank}</td>
+    <td class="mono" style="font-size:11px;">${r.firstFunded.slice(0,10)}</td>
+    <td class="r mono">${fNum(r.days)}</td>
+    <td class="r mono">${fNum(r.alpha)}</td>
+    <td class="r mono"><strong>${fUsd(r.usd)}</strong></td></tr>`).join('') ||
+    '<tr><td colspan="6" style="text-align:center;color:#aaa;padding:24px;">No resolved buyers yet. The daily job is still backfilling first-funded dates.</td></tr>';
+}
+
+function renderFreqFoot(){}
+function tt(fmt){ return {callbacks:fmt?{label:c=>' '+fmt(c.raw)}:undefined,backgroundColor:'#fff',borderColor:'#ddd',borderWidth:1,titleColor:'#111',bodyColor:'#444'}; }
+function tk(max){ return {font:{size:9,family:'Arial'},color:'#aaa',maxTicksLimit:max||6}; }
+function show(w){ ['loading','error','content'].forEach(id=>document.getElementById(id).classList.toggle('hidden',id!==w)); }
+function showError(m){ document.getElementById('error').innerHTML='<div class="err-box"><strong>Could not load new-buyer data.</strong><br>'+m+'</div>'; show('error'); }
+
+document.getElementById('freq-foot').textContent='Frequency is reconstructed from current holders’ first-SN25-stake dates (survivorship-biased: wallets that entered then exited are not shown). Covers the top 100 wallets by size; smaller buyers are counted in Net New Holders below.';
+document.querySelectorAll('#freq-toggles .tgl').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#freq-toggles .tgl').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+  GRAN=b.dataset.g; renderFreq(); renderCap();
+}));
+load();
+</script>
+</body>
+</html>

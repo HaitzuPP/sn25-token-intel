@@ -17,7 +17,10 @@ import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs';
 const API = 'https://api.taostats.io';
 const KEY = process.env.TAOSTATS_KEY || 'tao-8c2e099e-9e07-45c1-9069-727768f8f7a1:3f972bae';
 const NETUID = 25, RAO = 1e9, BLOCKS_PER_DAY = 7200;
-const OUT = 'data/sn25-snapshot.json', HIST = 'data/sn25-history.json', FF = 'data/sn25-firstfunded.json';
+const OUT = 'data/sn25-snapshot.json', HIST = 'data/sn25-history.json', FF = 'data/sn25-firstfunded.json', ALERTED = 'data/sn25-alerted.json';
+const WATCH = Number(process.env.WATCH || 100);            // holders to watch for new entrants
+const SIZE_USD = Number(process.env.SIZE_USD || 25000);    // "with size" threshold
+const FUNDED_DAYS = Number(process.env.FUNDED_DAYS || 7);  // "newly funded" window
 const BUDGET_MS = Number(process.env.BUDGET_MS || 0);
 const FF_BATCH = Number(process.env.FF_BATCH || 25);
 const START = Date.now();
@@ -43,6 +46,29 @@ const nearestUsdInHistory = (hist, ck, days) => {
   for (const day of hist){ const dt=Math.abs(new Date(day.ts).getTime()-cut); const row=day.holders.find(h=>h.ck===ck); if(row&&dt<bestDt&&new Date(day.ts).getTime()<=Date.now()-days*86400000+43200000){ best=row; bestDt=dt; } }
   return best ? best.usd : null;
 };
+
+// New SN25 buyers: bucket watched holders by their first-SN25-stake date (frequency),
+// plus an unbiased net-new holder count from the rolling holder-count history.
+function computeNewWallets(holders, hist){
+  const resolved = holders.filter(h=>h.firstFunded);
+  const dayKey = ts => new Date(ts).toISOString().slice(0,10);
+  const weekKey = ts => { const d=new Date(ts); const o=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())); const dn=(o.getUTCDay()+6)%7; o.setUTCDate(o.getUTCDate()-dn); return o.toISOString().slice(0,10); };
+  const bucket = keyFn => { const m={}; resolved.forEach(h=>{ const k=keyFn(h.firstFunded); (m[k]=m[k]||{count:0,usd:0,alpha:0}); m[k].count++; m[k].usd+=h.usd||0; m[k].alpha+=h.alpha||0; }); return Object.keys(m).sort().map(k=>({d:k,count:m[k].count,usd:m[k].usd,alpha:m[k].alpha})); };
+  const daily=bucket(dayKey), weekly=bucket(weekKey);
+  const now=Date.now();
+  const inWin=d=> resolved.filter(h=> (now-new Date(h.firstFunded).getTime())/86400000 <= d && (now-new Date(h.firstFunded).getTime())>=0);
+  const cap=arr=>arr.reduce((a,h)=>a+(h.usd||0),0);
+  const recent=[...resolved].sort((a,b)=>new Date(b.firstFunded)-new Date(a.firstFunded)).slice(0,40)
+    .map(h=>({ck:h.ck,rank:h.rank,alpha:h.alpha,usd:h.usd,firstFunded:h.firstFunded,days:Math.floor((now-new Date(h.firstFunded).getTime())/86400000)}));
+  const netNew=[]; const hs=(hist||[]).filter(d=>d.totalHolders!=null);
+  for(let i=1;i<hs.length;i++) netNew.push({d:hs[i].day, net:hs[i].totalHolders-hs[i-1].totalHolders});
+  return {
+    watched:holders.length, resolvedCount:resolved.length,
+    today:inWin(1).length, d7:inWin(7).length, d30:inWin(30).length, runRate30:inWin(30).length/30,
+    cap7:cap(inWin(7)), cap30:cap(inWin(30)),
+    daily, weekly, recent, netNew
+  };
+}
 
 async function computeOwnerEmission(histRaw, ownerCk, taoUsd){
   const rows=(histRaw||[]).filter(r=>r.timestamp&&r.total_alpha).sort((a,b)=>new Date(a.timestamp)-new Date(b.timestamp));
@@ -89,8 +115,8 @@ async function main(){
   let taoUsd=null; try{const t=(await get('/api/price/history/v1',{asset:'tao',limit:1})).data;const it=Array.isArray(t)?t[0]:t;taoUsd=toF(it?.price)||toF(it?.usd_price)||toF(it?.close);}catch(e){console.error(e.message);}
   await sleep(400); console.error('meta…');
   let meta={}; try{const m=(await get('/api/subnet/latest/v1',{netuid:NETUID})).data;meta=(Array.isArray(m)?m[0]:m)||{};}catch(e){console.error(e.message);}
-  await sleep(400); console.error('top25…');
-  const hr=await get('/api/dtao/stake_balance/latest/v1',{netuid:NETUID,order:'balance_desc',limit:25});
+  await sleep(400); console.error('top'+WATCH+'…');
+  const hr=await get('/api/dtao/stake_balance/latest/v1',{netuid:NETUID,order:'balance_desc',limit:WATCH});
   const holdersRaw=hr.data||[]; const totalHolders=hr.pagination?.total_items||meta.total_holders||null;
   await sleep(400); console.error('dist…');
   let dist=null; try{dist=(await get('/api/subnet/distribution/coldkey/v1',{netuid:NETUID})).data;}catch(e){console.error('dist',e.message);}
@@ -106,18 +132,19 @@ async function main(){
   const buyVol=(toF(pool.tao_buy_volume_24_hr)||0)/RAO, sellVol=(toF(pool.tao_sell_volume_24_hr)||0)/RAO;
   const alphaSupply=totalAlpha>0?totalAlpha:((priceTao&&priceTao>0)?mcapTao/priceTao:null);
 
-  let holders=holdersRaw.map((h,i)=>({ rank:h.subnet_rank||i+1, ck:h.coldkey?.ss58, hk:h.hotkey?.ss58,
+  const allHolders=holdersRaw.map((h,i)=>({ rank:h.subnet_rank||i+1, ck:h.coldkey?.ss58, hk:h.hotkey?.ss58,
     alpha:(toF(h.balance)||0)/RAO, tao:(toF(h.balance_as_tao)||0)/RAO,
     usd: taoUsd?((toF(h.balance_as_tao)||0)/RAO)*taoUsd:null,
     pct: alphaSupply?((toF(h.balance)||0)/RAO)/alphaSupply*100:null,
     firstFunded:null, d24:null, d7:null, d30:null }));
+  let holders=allHolders.slice(0,25);   // home dashboard shows top 25
 
-  // ---- rolling history (for Δ) ----
+  // ---- rolling history (Δ + net-new holder count) ----
   let hist=readJ(HIST,[]);
   hist=hist.filter(d=>d.day!==today());
-  hist.push({ day:today(), ts:new Date().toISOString(), taoUsd, price:priceTao, rank:pool.rank,
+  hist.push({ day:today(), ts:new Date().toISOString(), taoUsd, price:priceTao, rank:pool.rank, totalHolders,
     holders: holders.map(h=>({ck:h.ck,usd:h.usd,alpha:h.alpha})) });
-  while(hist.length>120) hist.shift();
+  while(hist.length>180) hist.shift();
   writeJ(HIST,hist);
 
   for(const h of holders){
@@ -125,10 +152,10 @@ async function main(){
     if(h.usd!=null){ if(u24!=null)h.d24=h.usd-u24; if(u7!=null)h.d7=h.usd-u7; if(u30!=null)h.d30=h.usd-u30; }
   }
 
-  // ---- first funded (persistent, gradual backfill) ----
+  // ---- first funded (persistent, gradual backfill across the watched set) ----
   const ffMap=readJ(FF,{});
   let filled=0;
-  for(const h of holders){
+  for(const h of allHolders){
     if(ffMap[h.ck]){ h.firstFunded=ffMap[h.ck]; continue; }
     if(filled>=FF_BATCH || overBudget()) continue;
     try{
@@ -139,6 +166,10 @@ async function main(){
     }catch(e){ console.error('ff',h.ck,e.message); }
     await sleep(400);
   }
+  for(const h of allHolders){ if(ffMap[h.ck]) h.firstFunded=ffMap[h.ck]; }
+
+  // ---- new SN25 buyers: frequency, capital, recent, net-new ----
+  const newWallets = computeNewWallets(allHolders, hist);
 
   // ---- owner emission: 18% cut, derived from subnet alpha emission, cross-checked vs owner hotkey ----
   const ownerEmission = await computeOwnerEmission(histRaw, meta?.owner?.ss58, taoUsd);
@@ -155,11 +186,11 @@ async function main(){
       buys_24_hr:pool.buys_24_hr, sells_24_hr:pool.sells_24_hr },
     meta:{ owner:meta.owner||null, registered_at:meta.registered_at||meta.created_at||null },
     totalHolders, derived:{ priceTao, mcapTao, alphaSupply, totalAlpha, alphaStaked, alphaInPool, poolTao, vol24, buyVol, sellVol },
-    ownerEmission,
+    ownerEmission, newWallets,
     history: histRaw.filter(h=>h.timestamp).map(h=>({timestamp:h.timestamp,price:toF(h.price),rank:toF(h.rank),total_tao:toF(h.total_tao),total_alpha:toF(h.total_alpha)})),
     holders
   };
   writeJ(OUT,snapshot);
-  console.error(`OK day=${snapshot.day} price=${priceTao} rank=${pool.rank} taoUsd=${taoUsd} holders=${holders.length} ff=${Object.keys(ffMap).length} daysTracked=${daysTracked}`);
+  console.error(`OK day=${snapshot.day} price=${priceTao} rank=${pool.rank} holders=${holders.length} watched=${allHolders.length} ff=${Object.keys(ffMap).length} newBuyers7d=${newWallets.d7} daysTracked=${daysTracked}`);
 }
 main().catch(e=>{ console.error('FATAL',e.message); process.exit(1); });
