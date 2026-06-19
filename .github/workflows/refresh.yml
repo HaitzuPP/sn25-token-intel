@@ -1,0 +1,30 @@
+name: Refresh SN25 snapshot
+on:
+  schedule:
+    - cron: '17 6 * * *'   # daily 06:17 UTC
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build snapshot
+        env:
+          TAOSTATS_KEY: ${{ secrets.TAOSTATS_KEY }}
+          FF_BATCH: '25'
+        run: node scripts/build-snapshot.mjs
+      - name: Commit updated data
+        run: |
+          git config user.name  "sn25-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/*.json
+          git commit -m "data: daily snapshot $(date -u +%F)" || echo "no changes"
+          git push

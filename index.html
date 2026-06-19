@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SN25 Mainframe – Token Intelligence | Pylon Partners</title>
+<!--
+  SN25 Mainframe (Macrocosmos) – Token Intelligence Dashboard. Pylon Partners / TAO Institute.
+  HOSTED MODE: reads data/sn25-snapshot.json, pre-computed daily by a GitHub Actions job.
+  Viewers never call the Taostats API directly. Holder 24h/7d/30d change is computed from
+  day-over-day stored snapshots, so it populates as the daily history accrues.
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #fff; color: #111; font-size: 13px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  a { color: #1a7a3a; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .green { color: #1a7a3a; } .red { color: #c0392b; } .amber { color: #d4a017; } .grey { color: #999; }
+  .mono { font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace; font-size: 11px; font-variant-numeric: tabular-nums; }
+  .num { font-variant-numeric: tabular-nums; }
+  .hidden { display: none !important; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  /* Header */
+  .header { border-bottom: 2px solid #111; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .logo { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: #1a7a3a; text-transform: uppercase; }
+  .dv { width: 1px; height: 22px; background: #ddd; }
+  .h-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+  .h-sub { font-size: 10px; color: #999; letter-spacing: 0.3px; text-transform: uppercase; margin-top: 1px; }
+  .header-right { display: flex; align-items: center; gap: 14px; font-size: 11px; color: #999; }
+  .freshness { text-align: right; line-height: 1.35; }
+  .live-dot { display: inline-block; width: 6px; height: 6px; background: #1a7a3a; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+  /* Alerts banner */
+  #alerts-banner { padding: 0 24px; }
+  .alert-item { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 4px; font-size: 12px; margin-top: 12px; font-weight: 600; }
+  .alert-red { background: #fdf0f0; border: 1px solid #e3b6b0; color: #c0392b; }
+  .alert-green { background: #e8f5ec; border: 1px solid #b7ddc4; color: #1a7a3a; }
+  .alert-amber { background: #fdf8e1; border: 1px solid #ecd99a; color: #b8860b; }
+
+  /* Stats bar */
+  .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #e0e0e0; }
+  .stat { padding: 16px 22px; border-right: 1px solid #eee; }
+  .stat:last-child { border-right: none; }
+  .stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.13em; color: #888; margin-bottom: 6px; }
+  .stat-main { font-size: 27px; font-weight: 700; line-height: 1; letter-spacing: -0.6px; }
+  .stat-sub { font-size: 11px; color: #888; margin-top: 6px; }
+
+  /* Signal cards */
+  .signal-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 20px 24px 6px; }
+  .sig-card { border: 1px solid #eee; border-radius: 6px; padding: 14px 16px; }
+  .sig-top { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
+  .sig-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .d-green { background: #1a7a3a; } .d-red { background: #c0392b; } .d-amber { background: #d4a017; } .d-grey { background: #ccc; }
+  .sig-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #999; }
+  .sig-val { font-size: 23px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.1; }
+  .sig-sub { font-size: 10px; color: #999; margin-top: 4px; }
+
+  /* Body + sections */
+  .body { padding: 20px 24px 44px; display: flex; flex-direction: column; gap: 20px; }
+  .section { border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
+  .section-head { padding: 11px 16px; background: #fafafa; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.11em; color: #333; }
+  .section-meta { font-size: 10px; color: #999; }
+  .conc-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 3px; }
+  .foot-note { padding: 9px 16px; border-top: 1px solid #f0f0f0; font-size: 10px; color: #999; background: #fafafa; line-height: 1.5; }
+
+  /* Verdict hero */
+  .verdict { display: flex; align-items: stretch; gap: 0; border-bottom: 1px solid #e0e0e0; }
+  .verdict-accent { width: 5px; flex-shrink: 0; }
+  .verdict-body { padding: 15px 22px; flex: 1; }
+  .verdict-line { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; line-height: 1.45; }
+  .verdict-line .grey { font-weight: 400; }
+  .verdict-tags { margin-top: 7px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .vtag { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 3px; display: inline-flex; align-items: center; gap: 5px; }
+  .vtag .vdot { width: 6px; height: 6px; border-radius: 50%; }
+  .vt-green { background: #e8f5ec; color: #1a7a3a; } .vt-red { background: #fbeceb; color: #c0392b; } .vt-amber { background: #fdf8e1; color: #b07d08; }
+
+  /* Toggles */
+  .toggles { display: flex; gap: 4px; }
+  .tgl { font-family: inherit; font-size: 10px; font-weight: 700; padding: 4px 12px; background: transparent; color: #aaa; border: 1px solid #e0e0e0; border-radius: 4px; cursor: pointer; letter-spacing: 0.3px; transition: all 0.1s; }
+  .tgl:hover { color: #111; border-color: #aaa; } .tgl.active { background: #111; color: #fff; border-color: #111; }
+
+  /* Charts */
+  .chart-pad { padding: 16px 18px; }
+  .chart-wrap { position: relative; height: 240px; }
+  .chart-wrap-sm { position: relative; height: 150px; }
+  .chart-cap { font-size: 9px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .chart-grid-2 { display: grid; grid-template-columns: 1.55fr 1fr; }
+  @media (max-width: 760px) { .chart-grid-2 { grid-template-columns: 1fr; } }
+
+  /* Tables */
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { padding: 9px 11px; text-align: left; font-size: 9px; text-transform: uppercase; letter-spacing: 0.07em; color: #999; font-weight: 700; border-bottom: 1px solid #e8e8e8; background: #fcfcfc; white-space: nowrap; }
+  th.r, td.r { text-align: right; }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: #111; }
+  th .arrow { color: #1a7a3a; font-size: 8px; }
+  td { padding: 9px 11px; border-bottom: 1px solid #f4f4f4; vertical-align: middle; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  .tr-hover:hover td { background: #fafff9; }
+  .total-row td { background: #f7f7f7; font-weight: 700; border-top: 1px solid #ddd; }
+  .rank-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; min-width: 28px; text-align: center; }
+  .rb-top { background: #ececec; color: #111; } .rb-mid { background: #f4f4f4; color: #777; } .rb-low { background: #f7f7f7; color: #999; }
+  .key-pill { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; color: #222; background: #f0f0f0; padding: 2px 7px; border-radius: 3px; cursor: pointer; transition: background 0.1s; }
+  .key-pill:hover { background: #e2e2e2; }
+  .tag { font-size: 8px; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-left: 6px; letter-spacing: 0.04em; vertical-align: middle; }
+  .tag-red { color: #c0392b; background: #fbeceb; border: 1px solid #ecc7c2; }
+  .tag-green { color: #1a7a3a; background: #e8f5ec; border: 1px solid #c2e2cd; }
+
+  /* Concentration risk panel */
+  .risk-grid { padding: 14px 16px; }
+  .risk-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f4f4f4; font-size: 12px; }
+  .risk-row:last-child { border-bottom: none; }
+  .risk-key { color: #666; }
+  .risk-val { font-weight: 700; }
+  .risk-bar-wrap { display: flex; align-items: center; gap: 9px; }
+  .risk-track { width: 84px; background: #eee; height: 5px; border-radius: 3px; overflow: hidden; }
+  .risk-fill { height: 100%; border-radius: 3px; }
+
+  /* Mechanics cards */
+  .mech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 11px; padding: 16px; }
+  .mech-card { border: 1px solid #eee; border-radius: 6px; padding: 13px 15px; }
+  .mech-val { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+  .mech-lbl { font-size: 9px; color: #999; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 5px; }
+  .mech-note { padding: 4px 16px 16px; font-size: 11px; color: #777; line-height: 1.65; }
+
+  /* Alerts config */
+  .alert-cfg { padding: 14px 16px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 28px; }
+  @media (max-width: 600px){ .alert-cfg { grid-template-columns: 1fr; } }
+  .cfg-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .cfg-row input[type=number] { width: 96px; font-family: inherit; font-size: 12px; padding: 5px 8px; border: 1px solid #ccc; border-radius: 4px; }
+  .cfg-row label { color: #555; flex: 1; }
+  .cfg-row input[type=checkbox] { accent-color: #1a7a3a; width: 15px; height: 15px; }
+
+  /* States */
+  .state-box { text-align: center; padding: 80px 24px; color: #ccc; }
+  .state-title { font-size: 14px; font-weight: 700; color: #888; margin-bottom: 16px; }
+  .dots span { display: inline-block; width: 7px; height: 7px; background: #1a7a3a; border-radius: 50%; margin: 0 3px; animation: bnc 1.1s ease-in-out infinite; }
+  .dots span:nth-child(2){ animation-delay: 0.18s; } .dots span:nth-child(3){ animation-delay: 0.36s; }
+  @keyframes bnc { 0%,80%,100%{transform:translateY(0);opacity:0.3;} 40%{transform:translateY(-9px);opacity:1;} }
+  .err-box { background: #fdf0f0; border: 1px solid #e3b6b0; color: #c0392b; padding: 16px 18px; border-radius: 6px; font-size: 12px; margin: 20px 24px; line-height: 1.6; }
+
+  /* Footer */
+  .footer { border-top: 1px solid #eee; padding: 12px 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: 10px; color: #bbb; }
+  .footer a { color: #bbb; } .footer a:hover { color: #1a7a3a; }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .header { padding: 13px 14px; } .h-sub { display: none; }
+    .stats-bar { grid-template-columns: 1fr 1fr; } .stat { border-bottom: 1px solid #eee; }
+    .stat-main { font-size: 21px; }
+    .signal-grid { grid-template-columns: 1fr 1fr; padding: 14px 14px 0; }
+    .body { padding: 14px 14px 30px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <span class="logo">Pylon Partners</span>
+      <div class="dv"></div>
+      <div>
+        <div class="h-title">SN25 Mainframe &middot; Token Intelligence</div>
+        <div class="h-sub">TAO Institute &middot; Macrocosmos &middot; Taostats</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="freshness">
+        <div><span class="live-dot"></span><span id="snap-time">Loading…</span></div>
+        <div id="snap-next" style="color:#bbb;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <div id="alerts-banner"></div>
+
+  <!-- STATES -->
+  <div id="loading" class="state-box">
+    <div class="state-title">Loading SN25 snapshot</div>
+    <div class="dots"><span></span><span></span><span></span></div>
+  </div>
+  <div id="error" class="hidden"></div>
+
+  <!-- CONTENT -->
+  <div id="content" class="hidden">
+    <div class="verdict" id="verdict"></div>
+    <div class="stats-bar" id="stats-bar"></div>
+    <div class="signal-grid" id="signal-cards"></div>
+
+    <div class="body">
+
+      <!-- A: PRICE ACTION -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Price Action &middot; Alpha / TAO</span>
+          <div class="toggles" id="price-toggles">
+            <button class="tgl active" data-p="7d">7D</button>
+            <button class="tgl" data-p="30d">30D</button>
+            <button class="tgl" data-p="90d">90D</button>
+            <button class="tgl" data-p="all">All</button>
+          </div>
+        </div>
+        <div class="chart-pad">
+          <div class="chart-cap">Alpha price (TAO)</div>
+          <div class="chart-wrap"><canvas id="price-chart"></canvas></div>
+        </div>
+        <div class="chart-pad" style="border-top:1px solid #f0f0f0;">
+          <div class="chart-cap">Day-to-day price change (%)</div>
+          <div class="chart-wrap-sm"><canvas id="daily-chart"></canvas></div>
+        </div>
+        <div class="chart-pad" style="border-top:1px solid #f0f0f0;">
+          <div class="chart-cap">Emission rank over time (lower is better)</div>
+          <div class="chart-wrap-sm"><canvas id="rank-chart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- B: TOP 25 HOLDERS -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Top 25 Holders</span>
+          <span class="section-meta" id="holders-meta"></span>
+        </div>
+        <div class="table-scroll">
+          <table id="holders-table">
+            <thead>
+              <tr>
+                <th title="Holder rank by alpha staked in SN25">Rank</th>
+                <th title="Coldkey: the wallet that owns the staked alpha. Click to copy, ↗ opens Taostats.">Wallet (coldkey)</th>
+                <th class="r sortable" data-k="alpha" title="Alpha tokens staked by this wallet in SN25">Alpha Held</th>
+                <th class="r sortable" data-k="usd" title="Alpha held × alpha price × TAO/USD">USD Value <span class="arrow">▼</span></th>
+                <th class="r sortable" data-k="pct" title="Share of total alpha supply">% Supply</th>
+                <th class="sortable" data-k="first" title="Date this wallet first staked into SN25">First Funded</th>
+                <th class="r sortable" data-k="d24" title="Change in USD holdings vs 24h ago (from daily snapshots)">24h Δ$</th>
+                <th class="r sortable" data-k="d7" title="Change in USD holdings vs 7d ago">7d Δ$</th>
+                <th class="r sortable" data-k="d30" title="Change in USD holdings vs 30d ago">30d Δ$</th>
+              </tr>
+            </thead>
+            <tbody id="holders-tbody"></tbody>
+          </table>
+        </div>
+        <div class="foot-note" id="holders-foot"></div>
+      </div>
+
+      <!-- C: CONCENTRATION -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Holder Concentration</span>
+          <span id="conc-verdict"></span>
+        </div>
+        <div class="chart-grid-2">
+          <div class="chart-pad" style="display:flex; align-items:center; justify-content:center;">
+            <div class="chart-wrap" style="height:250px; width:100%;"><canvas id="conc-chart"></canvas></div>
+          </div>
+          <div class="risk-grid" id="risk-grid" style="border-left:1px solid #f0f0f0;"></div>
+        </div>
+      </div>
+
+      <!-- C2: OWNER EMISSIONS -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Owner Emissions</span>
+          <span class="section-meta" title="Subnets distribute alpha 41% miners / 41% validators / 18% owner. The owner cut accrues to the owner key.">18% of alpha emission to the owner key</span>
+        </div>
+        <div class="mech-grid" id="oe-cards"></div>
+        <div class="chart-pad" style="border-top:1px solid #f0f0f0;">
+          <div class="chart-cap">Daily owner cut (TAO value)</div>
+          <div class="chart-wrap-sm"><canvas id="oe-chart"></canvas></div>
+        </div>
+        <div class="foot-note" id="oe-foot"></div>
+      </div>
+
+      <!-- D: LIQUIDITY & ALPHA MECHANICS -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Liquidity &amp; Alpha Mechanics</span>
+          <span class="section-meta">dTAO pool</span>
+        </div>
+        <div class="mech-grid" id="mech-grid"></div>
+        <div class="mech-note" id="mech-note"></div>
+      </div>
+
+      <!-- E: ALERTS -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Alert Rules</span>
+          <span class="section-meta">Saved in your browser &middot; evaluated on load</span>
+        </div>
+        <div class="alert-cfg" id="alert-cfg">
+          <div class="cfg-row"><input type="checkbox" id="a-price" checked><label for="a-price">Price moves more than</label><input type="number" id="a-price-v" value="15">% in 24h</div>
+          <div class="cfg-row"><input type="checkbox" id="a-wallet" checked><label for="a-wallet">Any top-25 wallet 24h Δ over $</label><input type="number" id="a-wallet-v" value="50000"></div>
+          <div class="cfg-row"><input type="checkbox" id="a-new" checked><label for="a-new">New wallet enters the top 25</label></div>
+          <div class="cfg-row"><input type="checkbox" id="a-rank" checked><label for="a-rank">Emission rank falls below #</label><input type="number" id="a-rank-v" value="35"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div><a href="https://taostats.io/subnets/25/metagraph" target="_blank">SN25 on Taostats ↗</a> &middot; Source: Taostats API, pre-computed daily</div>
+    <div id="footer-snap">Pylon Partners &middot; TAO Institute</div>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+const SNAPSHOT_URL = './data/sn25-snapshot.json';
+let STATE = null, CHARTS = {}, PRICE_PERIOD = '7d', SORT = { k:'usd', dir:-1 };
+
+// ---- format helpers ----
+const toF = v => { const n = parseFloat(v); return isNaN(n) ? null : n; };
+const fUsd  = n => n==null ? '–' : (n<0?'−':'') + '$' + Math.abs(Math.round(n)).toLocaleString();
+const fUsdD = n => n==null ? '–' : (n>=0?'+':'−') + '$' + Math.abs(Math.round(n)).toLocaleString();
+const fNum  = (n,d=0) => n==null ? '–' : Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const shortKey = k => k ? k.slice(0,6)+'…'+k.slice(-4) : '–';
+const dateStr = ts => { if(!ts) return '–'; const d=new Date(ts); return isNaN(d)?'–':d.toISOString().slice(0,10); };
+function ageStr(ts){ if(!ts) return ''; const d=Math.floor((Date.now()-new Date(ts).getTime())/86400000); return d>=0?d+'d':''; }
+
+// ---- load ----
+async function loadSnapshot(){
+  try {
+    const r = await fetch(SNAPSHOT_URL + '?t=' + Date.now(), { cache:'no-store' });
+    if (!r.ok) throw new Error('Snapshot not found (HTTP ' + r.status + '). The daily job may not have run yet.');
+    const s = await r.json();
+    STATE = {
+      gen: s.generatedAt, day: s.day, daysTracked: s.daysTracked || 1, totalSubnets: s.totalSubnets || null,
+      p: s.pool, history: s.history || [], taoUsd: s.taoUsd, meta: s.meta || {},
+      holders: (s.holders||[]).map(h => ({ ...h })), totalHolders: s.totalHolders,
+      priceTao: s.derived.priceTao, mcapTao: s.derived.mcapTao, alphaSupply: s.derived.alphaSupply,
+      totalAlpha: s.derived.totalAlpha, alphaStaked: s.derived.alphaStaked, alphaInPool: s.derived.alphaInPool,
+      poolTao: s.derived.poolTao, vol24: s.derived.vol24, buyVol: s.derived.buyVol, sellVol: s.derived.sellVol,
+      oe: s.ownerEmission || null
+    };
+    renderAll();
+  } catch(e){ showError(e.message); console.error(e); }
+}
+
+function renderAll(){
+  show('content');
+  const gen = new Date(STATE.gen);
+  const ageH = (Date.now() - gen.getTime())/3600000;
+  const stale = ageH > 36;
+  const st = document.getElementById('snap-time');
+  st.textContent = (stale?'⚠ ':'') + 'Snapshot ' + gen.toUTCString().replace('GMT','UTC');
+  st.className = stale ? 'amber' : '';
+  document.getElementById('snap-next').textContent = stale
+    ? Math.round(ageH) + 'h old · daily refresh may have stalled'
+    : 'Refreshes daily · day ' + STATE.daysTracked + ' of tracking';
+  document.getElementById('footer-snap').textContent = 'Snapshot ' + STATE.day + ' · Pylon Partners';
+  renderVerdict(); renderStats(); renderSignals(); renderHoldersTable(); renderConcentration(); renderOwnerEmission(); renderMechanics();
+  drawPriceChart(); drawDailyChart(); drawRankChart();
+  loadAlertCfg(); evaluateAlerts();
+}
+
+// Plain-language top-line call: the one thing an allocator reads first.
+function renderVerdict(){
+  const s = STATE, p = s.p;
+  const p1 = toF(p.price_change_1_day)||0, p7 = toF(p.price_change_1_week)||0;
+  const sorted = [...s.holders].sort((a,b)=>(b.pct||0)-(a.pct||0));
+  const top10 = sorted.slice(0,10).reduce((a,h)=>a+(h.pct||0),0);
+  const rank = p.rank, nSub = s.totalSubnets;
+  // concentration band
+  const cBand = top10>50 ? {w:'Concentrated',c:'red'} : top10>30 ? {w:'Moderate',c:'amber'} : {w:'Healthy',c:'green'};
+  // deregistration band
+  const dBand = rank<=10 ? {w:'Secure',c:'green'} : rank<=35 ? {w:'Stable',c:'amber'} : {w:'At risk',c:'red'};
+  // price band
+  const pBand = p1>=0 ? {c:'green'} : {c:'red'};
+  // worst signal sets the accent
+  const worst = [cBand.c, dBand.c].includes('red') ? '#c0392b' : [cBand.c, dBand.c, pBand.c].includes('amber') ? '#d4a017' : '#1a7a3a';
+  const priceUsd = s.priceTao && s.taoUsd ? s.priceTao*s.taoUsd : null;
+  const sent = top10>50 ? 'heavily concentrated' : top10>30 ? 'moderately concentrated' : 'broadly distributed';
+  const line = `SN25 alpha at ${priceUsd?'$'+priceUsd.toFixed(4):'–'} `
+    + `<span class="${pBand.c}">${p1>=0?'+':''}${p1.toFixed(1)}% 24h</span><span class="grey"> / ${p7>=0?'+':''}${p7.toFixed(1)}% 7d.</span> `
+    + `Ownership is ${sent} (top 10 hold ${top10.toFixed(0)}%). `
+    + `Emission rank #${rank}${nSub?' of '+nSub:''}: ${rank>35?'deregistration watch':rank<=10?'top-tier emission':'emission stable'}.`;
+  const tag = (dot,cls,txt) => `<span class="vtag vt-${cls}"><span class="vdot" style="background:${cls==='green'?'#1a7a3a':cls==='red'?'#c0392b':'#d4a017'}"></span>${txt}</span>`;
+  document.getElementById('verdict').innerHTML =
+    `<div class="verdict-accent" style="background:${worst}"></div>
+     <div class="verdict-body">
+       <div class="verdict-line">${line}</div>
+       <div class="verdict-tags">
+         ${tag(0,pBand.c,(p1>=0?'Price up':'Price down')+' 24h')}
+         ${tag(0,cBand.c,'Ownership '+cBand.w.toLowerCase())}
+         ${tag(0,dBand.c,'Dereg '+dBand.w.toLowerCase())}
+       </div>
+     </div>`;
+}
+
+function renderStats(){
+  const s = STATE, p = s.p;
+  const priceUsd = s.priceTao && s.taoUsd ? s.priceTao*s.taoUsd : null;
+  const p1d = toF(p.price_change_1_day) || 0;
+  const rank = p.rank, rankCls = rank<=10?'green':rank<=35?'amber':'red';
+  document.getElementById('stats-bar').innerHTML = `
+    <div class="stat"><div class="stat-label">Alpha Price</div>
+      <div class="stat-main num">${s.priceTao?'τ'+s.priceTao.toFixed(5):'–'}</div>
+      <div class="stat-sub">${priceUsd?'$'+priceUsd.toFixed(4):'–'} · <span class="${p1d>=0?'green':'red'}">${p1d>=0?'+':''}${p1d.toFixed(1)}%</span> 24h</div></div>
+    <div class="stat"><div class="stat-label">Market Cap</div>
+      <div class="stat-main num">τ${fNum(s.mcapTao)}</div>
+      <div class="stat-sub">${s.taoUsd?fUsd(s.mcapTao*s.taoUsd):'–'} · TAO $${s.taoUsd?s.taoUsd.toFixed(0):'–'}</div></div>
+    <div class="stat"><div class="stat-label" title="SN25's dTAO emission rank; lower means a larger share of daily TAO emission">Emission Rank</div>
+      <div class="stat-main num ${rankCls}">${rank?'#'+rank:'–'}</div>
+      <div class="stat-sub">${s.totalSubnets?'of '+s.totalSubnets+' subnets · ':''}${rank<=10?'top-10 allocation':rank<=35?'mid-tier':'dereg watch'}</div></div>
+    <div class="stat"><div class="stat-label">Total Holders</div>
+      <div class="stat-main num">${s.totalHolders?fNum(s.totalHolders):'–'}</div>
+      <div class="stat-sub">Alpha stakers</div></div>`;
+}
+
+function renderSignals(){
+  const s = STATE, p = s.p;
+  const p1=toF(p.price_change_1_day)||0, p7=toF(p.price_change_1_week)||0, p30=toF(p.price_change_1_month)||0;
+  const fg = toF(p.fear_and_greed_index);
+  const card = (lbl,val,sub,cls) => `<div class="sig-card"><div class="sig-top"><span class="sig-dot ${cls.dot}"></span><span class="sig-label">${lbl}</span></div><div class="sig-val ${cls.val}">${val}</div><div class="sig-sub">${sub}</div></div>`;
+  const pc = v => ({ dot: v>=0?'d-green':'d-red', val: v>=0?'green':'red' });
+  const fgCls = fg==null?{dot:'d-grey',val:''}:fg>=55?{dot:'d-green',val:'green'}:fg<=45?{dot:'d-red',val:'red'}:{dot:'d-amber',val:''};
+  document.getElementById('signal-cards').innerHTML =
+    card('24h Change',(p1>=0?'+':'')+p1.toFixed(1)+'%','Alpha price',pc(p1)) +
+    card('7d Change',(p7>=0?'+':'')+p7.toFixed(1)+'%','&nbsp;',pc(p7)) +
+    card('30d Change',(p30>=0?'+':'')+p30.toFixed(1)+'%','&nbsp;',pc(p30)) +
+    card('Sentiment',fg!=null?fg.toFixed(0)+(p.fear_and_greed_sentiment?' · '+p.fear_and_greed_sentiment:''):'–','Fear &amp; Greed (0–100)',fgCls);
+}
+
+function renderHoldersTable(){
+  const s = STATE;
+  const ownerKey = s.meta?.owner?.ss58 || null;
+  const histReady = { d24: s.daysTracked>=2, d7: s.daysTracked>=8, d30: s.daysTracked>=31 };
+  const rows = [...s.holders].sort((a,b)=>{
+    const k = SORT.k; let av,bv;
+    if (k==='first'){ av=a.firstFunded?new Date(a.firstFunded).getTime():0; bv=b.firstFunded?new Date(b.firstFunded).getTime():0; }
+    else { av=a[k]==null?-Infinity:a[k]; bv=b[k]==null?-Infinity:b[k]; }
+    return (av-bv)*SORT.dir;
+  });
+  const dCell = (v,ready) => {
+    if (v==null) return ready ? '<td class="r grey">–</td>' : '<td class="r grey" title="Builds from daily snapshots">·</td>';
+    return `<td class="r mono ${v>=0?'green':'red'}">${fUsdD(v)}</td>`;
+  };
+  const tb = document.getElementById('holders-tbody');
+  tb.innerHTML = rows.map(h => {
+    const rb = h.rank<=5?'rb-top':h.rank<=15?'rb-mid':'rb-low';
+    const isOwner = ownerKey && h.ck===ownerKey;
+    const conc = h.pct!=null && h.pct>5;
+    return `<tr class="tr-hover">
+      <td><span class="rank-badge ${rb}">#${h.rank}</span></td>
+      <td><span class="key-pill" onclick="navigator.clipboard&&navigator.clipboard.writeText('${h.ck}')" title="${h.ck}">${shortKey(h.ck)}</span>
+        <a href="https://taostats.io/coldkey/${h.ck}" target="_blank" style="font-size:9px;margin-left:3px;">↗</a>
+        ${isOwner?'<span class="tag tag-green">OWNER</span>':''}${conc?'<span class="tag tag-red">'+h.pct.toFixed(1)+'%</span>':''}</td>
+      <td class="r mono">${fNum(h.alpha)}</td>
+      <td class="r mono"><strong>${fUsd(h.usd)}</strong></td>
+      <td class="r mono">${h.pct!=null?h.pct.toFixed(2)+'%':'–'}</td>
+      <td class="mono" style="font-size:11px;">${dateStr(h.firstFunded)} <span class="grey">${h.firstFunded?'('+ageStr(h.firstFunded)+')':''}</span></td>
+      ${dCell(h.d24,histReady.d24)}${dCell(h.d7,histReady.d7)}${dCell(h.d30,histReady.d30)}
+    </tr>`;
+  }).join('');
+  const totAlpha=s.holders.reduce((a,h)=>a+(h.alpha||0),0), totUsd=s.holders.reduce((a,h)=>a+(h.usd||0),0);
+  const totPct=s.holders.reduce((a,h)=>a+(h.pct||0),0), td30=s.holders.reduce((a,h)=>a+(h.d30||0),0);
+  tb.innerHTML += `<tr class="total-row">
+    <td colspan="2" style="color:#555;">Top 25 combined</td>
+    <td class="r mono">${fNum(totAlpha)}</td>
+    <td class="r mono green">${fUsd(totUsd)}</td>
+    <td class="r mono">${totPct.toFixed(1)}%</td>
+    <td></td><td></td><td></td>
+    <td class="r mono ${td30>=0?'green':'red'}">${histReady.d30?fUsdD(td30):'·'}</td></tr>`;
+  document.getElementById('holders-meta').textContent = `${s.holders.length} wallets · ${totPct.toFixed(1)}% of supply`;
+  const ffCount = s.holders.filter(h=>h.firstFunded).length;
+  document.getElementById('holders-foot').textContent =
+    `Δ$ accrues from daily snapshots ("·" = building; day ${s.daysTracked}). First-funded resolved for ${ffCount}/${s.holders.length} wallets.`;
+}
+
+function renderConcentration(){
+  const s = STATE;
+  const sorted=[...s.holders].sort((a,b)=>(b.pct||0)-(a.pct||0));
+  const sum=arr=>arr.reduce((a,h)=>a+(h.pct||0),0);
+  const top1=sorted[0]?.pct||0, top10=sum(sorted.slice(0,10)), top25=sum(sorted.slice(0,25));
+  const next15=top25-top10, rest=Math.max(0,100-top25);
+  const hhi=Math.round(s.holders.reduce((a,h)=>a+Math.pow(h.pct||0,2),0));
+  const over5=s.holders.filter(h=>(h.pct||0)>5).length;
+  const whale30=s.holders.reduce((a,h)=>a+(h.d30||0),0);
+  const ready30=s.daysTracked>=31;
+
+  if (CHARTS.conc) CHARTS.conc.destroy();
+  CHARTS.conc = new Chart(document.getElementById('conc-chart'), {
+    type:'doughnut',
+    data:{ labels:['Top 10','Next 15','Rest of supply'], datasets:[{ data:[top10,next15,rest], backgroundColor:['#c0392b','#d4a017','#e6e6e6'], borderColor:'#fff', borderWidth:2 }] },
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
+      plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,family:'Arial'}, color:'#666', boxWidth:10, padding:12 } },
+        tooltip:{ callbacks:{ label:c=>` ${c.label}: ${c.raw.toFixed(1)}%` }, backgroundColor:'#fff', borderColor:'#ddd', borderWidth:1, titleColor:'#111', bodyColor:'#444' } } }
+  });
+  // plain-language verdict on concentration
+  const band = top10>50 ? {w:'Concentrated',cls:'vt-red'} : top10>30 ? {w:'Moderate',cls:'vt-amber'} : {w:'Healthy',cls:'vt-green'};
+  document.getElementById('conc-verdict').innerHTML = `<span class="conc-badge ${band.cls}">${band.w}</span>`;
+
+  const col=v=>v>40?'#c0392b':v>20?'#d4a017':'#1a7a3a';
+  const bar=(k,v,fmt,tip)=>`<div class="risk-row"><span class="risk-key"${tip?' title="'+tip+'"':''}>${k}</span><div class="risk-bar-wrap"><div class="risk-track"><div class="risk-fill" style="width:${Math.min(100,v)}%;background:${col(v)};"></div></div><span class="risk-val" style="color:${col(v)}">${fmt}</span></div></div>`;
+  const hhiTxt = hhi>2500?'high':hhi>1500?'moderate':'low';
+  const ownerKey = s.meta?.owner?.ss58 || null;
+  const ownerPct = ownerKey ? (s.holders.find(h=>h.ck===ownerKey)?.pct || 0) : null;
+  document.getElementById('risk-grid').innerHTML =
+    bar('Top-1 wallet',top1,top1.toFixed(1)+'%') +
+    bar('Top-10 wallets',top10,top10.toFixed(1)+'%') +
+    bar('Top-25 wallets',top25,top25.toFixed(1)+'%') +
+    (ownerPct!=null?bar('Owner / team wallet',ownerPct,ownerPct.toFixed(1)+'%','Subnet owner coldkey share of supply'):'') +
+    `<div class="risk-row"><span class="risk-key" title="Herfindahl-Hirschman Index of the top 25: sum of squared % shares. >2500 high, 1500–2500 moderate, <1500 low concentration.">Concentration index (HHI)</span><span class="risk-val ${hhi>2500?'red':hhi>1500?'amber':'green'}">${hhi} <span style="font-weight:400;color:#999;">${hhiTxt}</span></span></div>` +
+    `<div class="risk-row"><span class="risk-key">Wallets over 5% supply</span><span class="risk-val ${over5>2?'red':'grey'}">${over5}</span></div>` +
+    `<div class="risk-row" style="border:none;"><span class="risk-key" title="Sum of top-25 30-day USD change; positive = accumulation">Top-25 net 30d flow</span><span class="risk-val ${!ready30?'grey':whale30>=0?'green':'red'}">${ready30?fUsdD(whale30):'accruing'}</span></div>`;
+}
+
+function renderOwnerEmission(){
+  const o = STATE.oe, U = STATE.taoUsd;
+  const cardsEl = document.getElementById('oe-cards'), footEl = document.getElementById('oe-foot');
+  if(!o){ if(cardsEl) cardsEl.innerHTML = '<div class="mech-note" style="padding:14px;">Owner-emission data unavailable in this snapshot.</div>'; return; }
+  const usd = t => (U!=null && t!=null) ? '$'+Math.round(t*U).toLocaleString() : '–';
+  const annualTao = o.mean30Tao!=null ? o.mean30Tao*365 : (o.annualTao||null);
+  const card=(v,l)=>`<div class="mech-card"><div class="mech-val num">${v}</div><div class="mech-lbl">${l}</div></div>`;
+  cardsEl.innerHTML =
+    card(o.todayTao!=null?'τ'+o.todayTao.toFixed(2):'–', 'Today · '+usd(o.todayTao)) +
+    card(o.mean30Tao!=null?'τ'+o.mean30Tao.toFixed(2):'–', '30-day avg / day · '+usd(o.mean30Tao)) +
+    card(annualTao!=null?'τ'+fNum(annualTao):'–', 'Annualised · '+(annualTao!=null?'$'+Math.round(annualTao*U/1000)+'k':'–')+'/yr') +
+    card(o.cvAlpha!=null?o.cvAlpha.toFixed(0)+'%':'–', 'Variance (CV, alpha terms)');
+  const s = o.series||[];
+  if(CHARTS.oe) CHARTS.oe.destroy();
+  CHARTS.oe = new Chart(document.getElementById('oe-chart'), { type:'bar',
+    data:{ labels:s.map(x=>x.d.slice(5)), datasets:[{ data:s.map(x=>x.tao), backgroundColor:'#1a7a3a' }] },
+    options: baseLineOpts(v=>'τ'+Number(v).toFixed(2)) });
+  footEl.innerHTML =
+    `Owner cut = 18% of daily subnet alpha emission (Δ total alpha), valued at each day's alpha price. ` +
+    `Alpha/day is protocol-set, so the cut is near-constant in alpha (mean ${fNum(o.meanAllAlpha)} α, range ${fNum(o.minAlpha)}–${fNum(o.maxAlpha)}, CV ${o.cvAlpha!=null?o.cvAlpha.toFixed(0)+'%':'–'}); most fiat variance is price-driven. ` +
+    `Cross-checked against realized accrual to the owner hotkey${o.realizedAlphaPerDay!=null?' ('+fNum(o.realizedAlphaPerDay)+' α/day, matches the derived cut)':''}. Estimate; owners are paid in alpha, shown in TAO/USD equivalent.`;
+}
+
+function renderMechanics(){
+  const s = STATE, p = s.p;
+  const stakedPct = s.totalAlpha>0 ? s.alphaStaked/s.totalAlpha*100 : null;
+  const buyTilt = (s.buyVol+s.sellVol)>0 ? s.buyVol/(s.buyVol+s.sellVol)*100 : null;
+  const rootPct = toF(p.root_prop)!=null ? toF(p.root_prop)*100 : null;
+  const card=(v,l)=>`<div class="mech-card"><div class="mech-val num">${v}</div><div class="mech-lbl">${l}</div></div>`;
+  document.getElementById('mech-grid').innerHTML =
+    card('τ'+fNum(s.poolTao), 'TAO pool reserves') +
+    card(fNum(s.totalAlpha), 'Total alpha supply') +
+    card(stakedPct!=null?stakedPct.toFixed(0)+'%':'–', 'Alpha staked vs supply') +
+    card('τ'+fNum(s.vol24,1), '24h TAO volume') +
+    card(buyTilt!=null?buyTilt.toFixed(0)+'% buy':'–', '24h buy/sell tilt') +
+    card(s.mcapTao>0?(s.vol24/s.mcapTao*100).toFixed(1)+'%':'–', '24h volume / mkt cap');
+  document.getElementById('mech-note').innerHTML =
+    `Emission rank #${p.rank} sets SN25's share of daily TAO emission; a sustained decline is the leading deregistration signal. ` +
+    `SN25 is Macrocosmos' decentralised-science subnet (protein folding), so emission durability tracks real drug-discovery compute demand.`;
+}
+
+// ---- charts ----
+const periodCut = per => Date.now() - ({'7d':7,'30d':30,'90d':90,'all':99999}[per]||7)*86400000;
+const sortedHistory = () => [...STATE.history].filter(h=>h.timestamp).sort((a,b)=>new Date(a.timestamp)-new Date(b.timestamp));
+function baseLineOpts(fmt){
+  return { responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:c=>' '+fmt(c.raw) }, backgroundColor:'#fff', borderColor:'#ddd', borderWidth:1, titleColor:'#111', bodyColor:'#444' } },
+    scales:{ x:{ grid:{display:false}, ticks:{ maxTicksLimit:7, font:{size:9,family:'Arial'}, color:'#aaa' } },
+             y:{ grid:{color:'#f5f5f5'}, ticks:{ font:{size:9,family:'Arial'}, color:'#aaa', callback:fmt } } } };
+}
+function drawPriceChart(){
+  const rows=sortedHistory().filter(h=>new Date(h.timestamp).getTime()>=periodCut(PRICE_PERIOD)&&toF(h.price)!=null);
+  if(CHARTS.price)CHARTS.price.destroy();
+  CHARTS.price=new Chart(document.getElementById('price-chart'),{ type:'line',
+    data:{ labels:rows.map(r=>r.timestamp.slice(0,10)), datasets:[{ data:rows.map(r=>toF(r.price)), borderColor:'#1a7a3a', backgroundColor:'rgba(26,122,58,0.07)', borderWidth:2, fill:true, pointRadius:0, tension:0.2 }] },
+    options: baseLineOpts(v=>'τ'+Number(v).toFixed(5)) });
+}
+function drawDailyChart(){
+  const rows=sortedHistory().filter(h=>new Date(h.timestamp).getTime()>=periodCut(PRICE_PERIOD)&&toF(h.price)!=null);
+  const labels=[],data=[];
+  for(let i=1;i<rows.length;i++){const a=toF(rows[i-1].price),b=toF(rows[i].price);if(a&&b){labels.push(rows[i].timestamp.slice(5,10));data.push((b-a)/a*100);}}
+  if(CHARTS.daily)CHARTS.daily.destroy();
+  CHARTS.daily=new Chart(document.getElementById('daily-chart'),{ type:'bar',
+    data:{ labels, datasets:[{ data, backgroundColor:data.map(v=>v>=0?'#1a7a3a':'#c0392b') }] },
+    options: baseLineOpts(v=>Number(v).toFixed(1)+'%') });
+}
+function drawRankChart(){
+  const rows=sortedHistory().filter(h=>new Date(h.timestamp).getTime()>=periodCut(PRICE_PERIOD)&&toF(h.rank)!=null);
+  if(CHARTS.rank)CHARTS.rank.destroy();
+  CHARTS.rank=new Chart(document.getElementById('rank-chart'),{ type:'line',
+    data:{ labels:rows.map(r=>r.timestamp.slice(0,10)), datasets:[{ data:rows.map(r=>toF(r.rank)), borderColor:'#111', borderWidth:1.5, pointRadius:0, tension:0.2 }] },
+    options:{ ...baseLineOpts(v=>'#'+v), scales:{ x:{grid:{display:false},ticks:{maxTicksLimit:6,font:{size:9,family:'Arial'},color:'#aaa'}}, y:{reverse:true,grid:{color:'#f5f5f5'},ticks:{font:{size:9,family:'Arial'},color:'#aaa'}} } } });
+}
+
+// ---- alerts ----
+function loadAlertCfg(){ const c=readJSON('SN25_CFG'); if(!c)return;
+  ['a-price','a-wallet','a-new','a-rank'].forEach(id=>{ if(c[id]!=null)document.getElementById(id).checked=c[id]; });
+  ['a-price-v','a-wallet-v','a-rank-v'].forEach(id=>{ if(c[id]!=null)document.getElementById(id).value=c[id]; }); }
+function saveAlertCfg(){ const c={}; ['a-price','a-wallet','a-new','a-rank'].forEach(id=>c[id]=document.getElementById(id).checked);
+  ['a-price-v','a-wallet-v','a-rank-v'].forEach(id=>c[id]=document.getElementById(id).value); writeJSON('SN25_CFG',c); evaluateAlerts(); }
+function evaluateAlerts(){
+  const s=STATE, out=[]; const p1=toF(s.p.price_change_1_day)||0;
+  if(document.getElementById('a-price').checked){ const t=+document.getElementById('a-price-v').value; if(Math.abs(p1)>=t) out.push({c:p1>=0?'alert-green':'alert-red',t:`Price moved ${p1>=0?'+':''}${p1.toFixed(1)}% in 24h (threshold ${t}%)`}); }
+  if(document.getElementById('a-wallet').checked){ const t=+document.getElementById('a-wallet-v').value; s.holders.filter(h=>h.d24!=null&&Math.abs(h.d24)>=t).forEach(h=>out.push({c:h.d24>=0?'alert-green':'alert-red',t:`Wallet ${shortKey(h.ck)} 24h move ${fUsdD(h.d24)}`})); }
+  if(document.getElementById('a-rank').checked){ const t=+document.getElementById('a-rank-v').value; if(s.p.rank>t) out.push({c:'alert-red',t:`Emission rank #${s.p.rank} below threshold #${t}, deregistration watch`}); }
+  if(document.getElementById('a-new').checked){ const prev=readJSON('SN25_LASTKEYS'); if(prev&&Array.isArray(prev)){ const set=new Set(prev); s.holders.filter(h=>!set.has(h.ck)).forEach(h=>out.push({c:'alert-amber',t:`New wallet in top 25: ${shortKey(h.ck)} (${fUsd(h.usd)})`})); } writeJSON('SN25_LASTKEYS', s.holders.map(h=>h.ck)); }
+  document.getElementById('alerts-banner').innerHTML = out.length
+    ? out.map(a=>`<div class="alert-item ${a.c}">● ${a.t}</div>`).join('')
+    : `<div class="alert-item" style="background:#fafafa;border:1px solid #eee;color:#999;font-weight:400;">No active alerts against your current thresholds.</div>`;
+}
+
+// ---- util ----
+function readJSON(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
+function writeJSON(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+function show(which){ ['loading','error','content'].forEach(id=>document.getElementById(id).classList.toggle('hidden',id!==which)); }
+function showError(msg){ document.getElementById('error').innerHTML=`<div class="err-box"><strong>Could not load the SN25 snapshot.</strong><br>${msg}</div>`; show('error'); }
+
+// ---- events ----
+document.querySelectorAll('#price-toggles .tgl').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#price-toggles .tgl').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+  PRICE_PERIOD=b.dataset.p; drawPriceChart(); drawDailyChart(); drawRankChart();
+}));
+document.querySelectorAll('th.sortable').forEach(th=>th.addEventListener('click',()=>{
+  const k=th.dataset.k; if(SORT.k===k)SORT.dir*=-1; else {SORT.k=k;SORT.dir=-1;}
+  document.querySelectorAll('th.sortable .arrow').forEach(a=>a.remove());
+  const ar=document.createElement('span'); ar.className='arrow'; ar.textContent=SORT.dir<0?' ▼':' ▲'; th.appendChild(ar);
+  renderHoldersTable();
+}));
+document.getElementById('alert-cfg').addEventListener('change',saveAlertCfg);
+document.getElementById('alert-cfg').addEventListener('input',saveAlertCfg);
+
+loadSnapshot();
+</script>
+</body>
+</html>
