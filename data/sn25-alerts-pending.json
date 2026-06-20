@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-06-20T15:41:03.639Z",
+  "netuid": 25,
+  "thresholdUsd": 10000,
+  "fundedDays": 7,
+  "flagged": [
+    {
+      "ck": "5HeNFrj2pMf3odu3FSGe7HhUNpCvEK7hrHjaUbRyWR1DPMGM",
+      "rank": 12,
+      "alpha": 23022.996419845,
+      "usd": 21589.86040164344,
+      "firstFunded": "2026-06-14T23:59:48Z",
+      "days": 5
+    }
+  ]
+}
