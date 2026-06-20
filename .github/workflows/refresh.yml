@@ -28,3 +28,9 @@ jobs:
           git add data/*.json
           git commit -m "data: daily snapshot $(date -u +%F)" || echo "no changes"
           git push
+      - name: Slack alert (new buyers flagged)
+        if: always()
+        continue-on-error: true
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: node scripts/slack-notify.mjs

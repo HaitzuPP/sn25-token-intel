@@ -21,6 +21,8 @@ const OUT = 'data/sn25-snapshot.json', HIST = 'data/sn25-history.json', FF = 'da
 const WATCH = Number(process.env.WATCH || 100);            // holders to watch for new entrants
 const SIZE_USD = Number(process.env.SIZE_USD || 25000);    // "with size" threshold
 const FUNDED_DAYS = Number(process.env.FUNDED_DAYS || 7);  // "newly funded" window
+const ALERT_SIZE_USD = Number(process.env.ALERT_SIZE_USD || 10000); // min size to fire a Slack alert
+const PENDING = 'data/sn25-alerts-pending.json';
 const BUDGET_MS = Number(process.env.BUDGET_MS || 0);
 const FF_BATCH = Number(process.env.FF_BATCH || 25);
 const START = Date.now();
@@ -170,6 +172,23 @@ async function main(){
 
   // ---- new SN25 buyers: frequency, capital, recent, net-new ----
   const newWallets = computeNewWallets(allHolders, hist);
+
+  // ---- flag new buyers for Slack alert (recent + size, once per wallet) ----
+  const alerted = new Set(readJ(ALERTED, []));
+  const nowMs = Date.now();
+  const flagged = [];
+  for(const h of allHolders){
+    if(!h.firstFunded || h.usd==null) continue;
+    const days = (nowMs - new Date(h.firstFunded).getTime())/86400000;
+    if(days>=0 && days<=FUNDED_DAYS && h.usd>=ALERT_SIZE_USD && !alerted.has(h.ck)){
+      flagged.push({ ck:h.ck, rank:h.rank, alpha:h.alpha, usd:h.usd, firstFunded:h.firstFunded, days:Math.floor(days) });
+      alerted.add(h.ck);
+    }
+  }
+  flagged.sort((a,b)=>b.usd-a.usd);
+  writeJ(ALERTED, [...alerted]);
+  writeJ(PENDING, { generatedAt:new Date().toISOString(), netuid:NETUID, thresholdUsd:ALERT_SIZE_USD, fundedDays:FUNDED_DAYS, flagged });
+  newWallets.flaggedCount = flagged.length;
 
   // ---- owner emission: 18% cut, derived from subnet alpha emission, cross-checked vs owner hotkey ----
   const ownerEmission = await computeOwnerEmission(histRaw, meta?.owner?.ss58, taoUsd);
