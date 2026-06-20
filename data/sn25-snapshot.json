@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-06-19T10:50:02.171Z",
-  "day": "2026-06-19",
+  "generatedAt": "2026-06-20T07:44:02.701Z",
+  "day": "2026-06-20",
   "netuid": 25,
   "name": "Mainframe",
   "symbol": "א",
-  "taoUsd": 225.367933345702,
-  "daysTracked": 1,
+  "taoUsd": 231.705931120823,
+  "daysTracked": 2,
   "totalSubnets": 129,
   "pool": {
-    "price": 0.003976795,
-    "market_cap": 18369286141406,
-    "rank": 61,
-    "total_tao": 10194038899846,
-    "total_alpha": 5313552632988892,
-    "alpha_staked": 2055140716333914,
-    "alpha_in_pool": 2563977478445062,
-    "tao_volume_24_hr": 146958697066,
-    "tao_buy_volume_24_hr": 77450107595,
-    "tao_sell_volume_24_hr": 69508589471,
-    "fear_and_greed_index": "51.1",
+    "price": 0.004036621,
+    "market_cap": 18660733856083,
+    "rank": 58,
+    "total_tao": 10270498636105,
+    "total_alpha": 5319810632988892,
+    "alpha_staked": 2077966005790211,
+    "alpha_in_pool": 2544894018988765,
+    "tao_volume_24_hr": 119850217522,
+    "tao_buy_volume_24_hr": 106072335974,
+    "tao_sell_volume_24_hr": 13777881548,
+    "fear_and_greed_index": "59.3",
     "fear_and_greed_sentiment": "Neutral",
-    "root_prop": 0.1527499954221725,
-    "price_change_1_day": 0.1220560093072742,
-    "price_change_1_week": 0.2339248204291151,
-    "price_change_1_month": -22.11109211283721,
-    "buys_24_hr": 16,
+    "root_prop": 0.1526669835065856,
+    "price_change_1_day": 1.787410511589649,
+    "price_change_1_week": 2.677600979814848,
+    "price_change_1_month": -21.01981851048997,
+    "buys_24_hr": 20,
     "sells_24_hr": 14
   },
   "meta": {
@@ -34,45 +34,40 @@
     },
     "registered_at": null
   },
-  "totalHolders": 1801,
+  "totalHolders": 1811,
   "derived": {
-    "priceTao": 0.003976795,
-    "mcapTao": 18369.286141406,
-    "alphaSupply": 5313552.632988892,
-    "totalAlpha": 5313552.632988892,
-    "alphaStaked": 2055140.716333914,
-    "alphaInPool": 2563977.478445062,
-    "poolTao": 10194.038899846,
-    "vol24": 146.958697066,
-    "buyVol": 77.450107595,
-    "sellVol": 69.508589471
+    "priceTao": 0.004036621,
+    "mcapTao": 18660.733856083,
+    "alphaSupply": 5319810.632988892,
+    "totalAlpha": 5319810.632988892,
+    "alphaStaked": 2077966.005790211,
+    "alphaInPool": 2544894.018988765,
+    "poolTao": 10270.498636105,
+    "vol24": 119.850217522,
+    "buyVol": 106.072335974,
+    "sellVol": 13.777881548
   },
   "ownerEmission": {
     "cutPct": 18,
     "todayAlpha": 1296,
-    "todayTao": 5.16662064,
-    "todayUsd": 1164.3906160180481,
+    "todayTao": 5.216595696000001,
+    "todayUsd": 1208.716163022558,
     "mean7Alpha": 1295.9967656632166,
-    "mean7Tao": 5.1379592743380025,
-    "mean30Alpha": 1316.0388588554654,
-    "mean30Tao": 5.675930515722562,
+    "mean7Tao": 5.156306376052288,
+    "mean30Alpha": 1311.1718186217026,
+    "mean30Tao": 5.602848634268529,
     "meanAllAlpha": 1463.8937909745755,
-    "meanAllTao": 6.897310605127637,
+    "meanAllTao": 6.896071780237804,
     "medianAlpha": 1304.5975991279258,
     "sdAlpha": 214.51054308019252,
     "cvAlpha": 14.653422564036141,
     "minAlpha": 1263.5065107992011,
     "maxAlpha": 1935.5297732707857,
-    "annualTao": 2517.5183708715876,
-    "annualUsd": 567367.9124031683,
-    "realizedAlphaPerDay": 1299.56694684,
-    "realizedTao": 5.180840594602875,
+    "annualTao": 2517.0661997867987,
+    "annualUsd": 583219.1675143517,
+    "realizedAlphaPerDay": 1299.5669468400006,
+    "realizedTao": 5.230953195639976,
     "series": [
-      {
-        "d": "2026-02-20",
-        "alpha": 1505.808479746878,
-        "tao": 7.184883432881125
-      },
       {
         "d": "2026-02-21",
         "alpha": 1539.0602058853021,
@@ -667,10 +662,647 @@
         "d": "2026-06-19",
         "alpha": 1296,
         "tao": 5.16662064
+      },
+      {
+        "d": "2026-06-20",
+        "alpha": 1296,
+        "tao": 5.216595696000001
       }
     ]
   },
+  "newWallets": {
+    "watched": 100,
+    "resolvedCount": 48,
+    "today": 0,
+    "d7": 3,
+    "d30": 6,
+    "runRate30": 0.2,
+    "cap7": 37014.99360977304,
+    "cap30": 58224.17705743341,
+    "daily": [
+      {
+        "d": "2025-05-04",
+        "count": 1,
+        "usd": 8086.929218185276,
+        "alpha": 8646.262334702
+      },
+      {
+        "d": "2025-11-08",
+        "count": 1,
+        "usd": 11074.140340017188,
+        "alpha": 11840.084156521
+      },
+      {
+        "d": "2025-12-02",
+        "count": 3,
+        "usd": 21259.482611661053,
+        "alpha": 22729.896454413996
+      },
+      {
+        "d": "2025-12-03",
+        "count": 3,
+        "usd": 726485.7090821974,
+        "alpha": 776733.15218461
+      },
+      {
+        "d": "2025-12-22",
+        "count": 1,
+        "usd": 6490.541970998473,
+        "alpha": 6939.460834008
+      },
+      {
+        "d": "2026-01-06",
+        "count": 3,
+        "usd": 41377.21552449478,
+        "alpha": 44239.073998987
+      },
+      {
+        "d": "2026-01-07",
+        "count": 3,
+        "usd": 31897.903117479258,
+        "alpha": 34104.124179038
+      },
+      {
+        "d": "2026-01-09",
+        "count": 5,
+        "usd": 65842.96378042949,
+        "alpha": 70396.997721212
+      },
+      {
+        "d": "2026-01-10",
+        "count": 1,
+        "usd": 5288.584165562898,
+        "alpha": 5654.369519287
+      },
+      {
+        "d": "2026-01-13",
+        "count": 3,
+        "usd": 57691.3265118939,
+        "alpha": 61681.55179836
+      },
+      {
+        "d": "2026-01-14",
+        "count": 2,
+        "usd": 78959.98713914433,
+        "alpha": 84421.261066074
+      },
+      {
+        "d": "2026-01-18",
+        "count": 1,
+        "usd": 31200.81792805553,
+        "alpha": 33358.825035541
+      },
+      {
+        "d": "2026-01-24",
+        "count": 1,
+        "usd": 304750.6395189626,
+        "alpha": 325828.742265171
+      },
+      {
+        "d": "2026-02-02",
+        "count": 1,
+        "usd": 15984.617330489671,
+        "alpha": 17090.194687256
+      },
+      {
+        "d": "2026-02-21",
+        "count": 1,
+        "usd": 11411.121889905999,
+        "alpha": 12200.373062877
+      },
+      {
+        "d": "2026-03-05",
+        "count": 1,
+        "usd": 17491.02687705011,
+        "alpha": 18700.795172404
+      },
+      {
+        "d": "2026-03-13",
+        "count": 1,
+        "usd": 6787.575788310828,
+        "alpha": 7257.039019443
+      },
+      {
+        "d": "2026-03-15",
+        "count": 1,
+        "usd": 5088.651514536086,
+        "alpha": 5440.608510259
+      },
+      {
+        "d": "2026-03-16",
+        "count": 1,
+        "usd": 6333.609898677717,
+        "alpha": 6771.674542101
+      },
+      {
+        "d": "2026-03-31",
+        "count": 2,
+        "usd": 9933.508841964744,
+        "alpha": 10620.560788375
+      },
+      {
+        "d": "2026-04-24",
+        "count": 1,
+        "usd": 5508.531249141387,
+        "alpha": 5889.529260656
+      },
+      {
+        "d": "2026-05-05",
+        "count": 3,
+        "usd": 62215.632774349695,
+        "alpha": 66518.782071082
+      },
+      {
+        "d": "2026-05-13",
+        "count": 2,
+        "usd": 11378.68186325136,
+        "alpha": 12165.689319264
+      },
+      {
+        "d": "2026-06-05",
+        "count": 1,
+        "usd": 4801.012295066395,
+        "alpha": 5133.074700734
+      },
+      {
+        "d": "2026-06-08",
+        "count": 1,
+        "usd": 11074.117248899209,
+        "alpha": 11840.059468511
+      },
+      {
+        "d": "2026-06-11",
+        "count": 1,
+        "usd": 5334.053903694763,
+        "alpha": 5702.98417544
+      },
+      {
+        "d": "2026-06-14",
+        "count": 1,
+        "usd": 21526.24931018734,
+        "alpha": 23015.114093113
+      },
+      {
+        "d": "2026-06-17",
+        "count": 1,
+        "usd": 8300.187527321545,
+        "alpha": 8874.270672245
+      },
+      {
+        "d": "2026-06-18",
+        "count": 1,
+        "usd": 7188.556772264155,
+        "alpha": 7685.753885612
+      }
+    ],
+    "weekly": [
+      {
+        "d": "2025-04-28",
+        "count": 1,
+        "usd": 8086.929218185276,
+        "alpha": 8646.262334702
+      },
+      {
+        "d": "2025-11-03",
+        "count": 1,
+        "usd": 11074.140340017188,
+        "alpha": 11840.084156521
+      },
+      {
+        "d": "2025-12-01",
+        "count": 6,
+        "usd": 747745.1916938585,
+        "alpha": 799463.048639024
+      },
+      {
+        "d": "2025-12-22",
+        "count": 1,
+        "usd": 6490.541970998473,
+        "alpha": 6939.460834008
+      },
+      {
+        "d": "2026-01-05",
+        "count": 12,
+        "usd": 144406.6665879664,
+        "alpha": 154394.56541852397
+      },
+      {
+        "d": "2026-01-12",
+        "count": 6,
+        "usd": 167852.13157909375,
+        "alpha": 179461.63789997503
+      },
+      {
+        "d": "2026-01-19",
+        "count": 1,
+        "usd": 304750.6395189626,
+        "alpha": 325828.742265171
+      },
+      {
+        "d": "2026-02-02",
+        "count": 1,
+        "usd": 15984.617330489671,
+        "alpha": 17090.194687256
+      },
+      {
+        "d": "2026-02-16",
+        "count": 1,
+        "usd": 11411.121889905999,
+        "alpha": 12200.373062877
+      },
+      {
+        "d": "2026-03-02",
+        "count": 1,
+        "usd": 17491.02687705011,
+        "alpha": 18700.795172404
+      },
+      {
+        "d": "2026-03-09",
+        "count": 2,
+        "usd": 11876.227302846914,
+        "alpha": 12697.647529702
+      },
+      {
+        "d": "2026-03-16",
+        "count": 1,
+        "usd": 6333.609898677717,
+        "alpha": 6771.674542101
+      },
+      {
+        "d": "2026-03-30",
+        "count": 2,
+        "usd": 9933.508841964744,
+        "alpha": 10620.560788375
+      },
+      {
+        "d": "2026-04-20",
+        "count": 1,
+        "usd": 5508.531249141387,
+        "alpha": 5889.529260656
+      },
+      {
+        "d": "2026-05-04",
+        "count": 3,
+        "usd": 62215.632774349695,
+        "alpha": 66518.782071082
+      },
+      {
+        "d": "2026-05-11",
+        "count": 2,
+        "usd": 11378.68186325136,
+        "alpha": 12165.689319264
+      },
+      {
+        "d": "2026-06-01",
+        "count": 1,
+        "usd": 4801.012295066395,
+        "alpha": 5133.074700734
+      },
+      {
+        "d": "2026-06-08",
+        "count": 3,
+        "usd": 37934.420462781316,
+        "alpha": 40558.157737064
+      },
+      {
+        "d": "2026-06-15",
+        "count": 2,
+        "usd": 15488.7442995857,
+        "alpha": 16560.024557857
+      }
+    ],
+    "recent": [
+      {
+        "ck": "5GEAc2xwinJsVUftvDZQni6nUdMFGMzg76bXKrV4Ks7ZMxhA",
+        "rank": 33,
+        "alpha": 7685.753885612,
+        "usd": 7188.556772264155,
+        "firstFunded": "2026-06-18T23:59:48Z",
+        "days": 1
+      },
+      {
+        "ck": "5HdVrUBLAGb4K4aVQT5YAfXzCne8uUFjmhioUusMUSgyciQA",
+        "rank": 28,
+        "alpha": 8874.270672245,
+        "usd": 8300.187527321545,
+        "firstFunded": "2026-06-17T23:59:48.001Z",
+        "days": 2
+      },
+      {
+        "ck": "5HeNFrj2pMf3odu3FSGe7HhUNpCvEK7hrHjaUbRyWR1DPMGM",
+        "rank": 12,
+        "alpha": 23015.114093113,
+        "usd": 21526.24931018734,
+        "firstFunded": "2026-06-14T23:59:48Z",
+        "days": 5
+      },
+      {
+        "ck": "5D5HvofW1n8NJwnZhLazx57tbuLLUSSUKhBMRT8Kd8jzuEcN",
+        "rank": 44,
+        "alpha": 5702.98417544,
+        "usd": 5334.053903694763,
+        "firstFunded": "2026-06-11T23:59:48Z",
+        "days": 8
+      },
+      {
+        "ck": "5GEZEgicrmPbWr1tMLM5CaikXEkKEub9sz4mAxhqRgZX6M2j",
+        "rank": 21,
+        "alpha": 11840.059468511,
+        "usd": 11074.117248899209,
+        "firstFunded": "2026-06-08T23:59:48.001Z",
+        "days": 11
+      },
+      {
+        "ck": "5ECsu8cUzxKXiZU91ziBCZ6AnnQG1oGzTmMo8kwVmGPxc3HX",
+        "rank": 52,
+        "alpha": 5133.074700734,
+        "usd": 4801.012295066395,
+        "firstFunded": "2026-06-05T23:59:48Z",
+        "days": 14
+      },
+      {
+        "ck": "5G4529T37eaCEy64dRH8QhMyCr2iZSZnfRvo5EnRY1uC7EpB",
+        "rank": 37,
+        "alpha": 6321.011583877,
+        "usd": 5912.100661063215,
+        "firstFunded": "2026-05-13T23:59:48Z",
+        "days": 37
+      },
+      {
+        "ck": "5GH2aUTMRUh1RprCgH4x3tRyCaKeUi5BfmYCfs1NARA8R54n",
+        "rank": 43,
+        "alpha": 5844.677735387,
+        "usd": 5466.581202188145,
+        "firstFunded": "2026-05-13T23:59:48Z",
+        "days": 37
+      },
+      {
+        "ck": "5EBuUXD6eXSSWVaT1NqaUQoAACUkAmEogzAfPQvDXTEQZ8Ff",
+        "rank": 51,
+        "alpha": 5174.557435288,
+        "usd": 4839.8114808055825,
+        "firstFunded": "2026-05-05T22:22:00Z",
+        "days": 45
+      },
+      {
+        "ck": "5EBuUXD6eXSSWVaT1NqaUQoAACUkAmEogzAfPQvDXTEQZ8Ff",
+        "rank": 92,
+        "alpha": 2482.95176249,
+        "usd": 2322.327773243629,
+        "firstFunded": "2026-05-05T22:22:00Z",
+        "days": 45
+      },
+      {
+        "ck": "5FRXwb2qsEhqDQQKcm5m2MF26xTWwW65MHTEtKFFydypuqjG",
+        "rank": 5,
+        "alpha": 58861.272873304,
+        "usd": 55053.49352030048,
+        "firstFunded": "2026-05-05T12:43:36Z",
+        "days": 45
+      },
+      {
+        "ck": "5F9LSSxrEjTmnWtUNAj4tCHBQTwVgc4EjDFoSe9BeD3fN9Yi",
+        "rank": 41,
+        "alpha": 5889.529260656,
+        "usd": 5508.531249141387,
+        "firstFunded": "2026-04-24T14:50:00Z",
+        "days": 56
+      },
+      {
+        "ck": "5Ci1DAqDKzxeWSyd6zMkPYE7wMo7D9z4PcGdz1B8GVydpxAV",
+        "rank": 49,
+        "alpha": 5313.341187427,
+        "usd": 4969.617209163441,
+        "firstFunded": "2026-03-31T23:59:48Z",
+        "days": 80
+      },
+      {
+        "ck": "5EkMm4mp1SvHEHpRXW7PG93KEAJ1cdMudQBFH7ftWeN5ek3D",
+        "rank": 50,
+        "alpha": 5307.219600948,
+        "usd": 4963.891632801302,
+        "firstFunded": "2026-03-31T23:59:48Z",
+        "days": 80
+      },
+      {
+        "ck": "5CerKrvptmdGG1ACaso4KJPSEJ32x4PJKKVg4qPP63z1sZ2x",
+        "rank": 36,
+        "alpha": 6771.674542101,
+        "usd": 6333.609898677717,
+        "firstFunded": "2026-03-16T23:59:48Z",
+        "days": 95
+      },
+      {
+        "ck": "5GEczqHddRzLSUNqpL4gekicYa5s6TXtoFDbph2QLMSMQVSY",
+        "rank": 48,
+        "alpha": 5440.608510259,
+        "usd": 5088.651514536086,
+        "firstFunded": "2026-03-15T23:59:48Z",
+        "days": 96
+      },
+      {
+        "ck": "5FnjDPuzF4mGL64ipFUAVqB4BG8EcLpedLicxxLNAr8gxajP",
+        "rank": 34,
+        "alpha": 7257.039019443,
+        "usd": 6787.575788310828,
+        "firstFunded": "2026-03-13T23:59:48Z",
+        "days": 98
+      },
+      {
+        "ck": "5G9CSvpfupX1smaKmvCxb7zhMS5gHfJvAoxCEsq3t18yER5E",
+        "rank": 14,
+        "alpha": 18700.795172404,
+        "usd": 17491.02687705011,
+        "firstFunded": "2026-03-05T23:59:48Z",
+        "days": 106
+      },
+      {
+        "ck": "5GF7kTAkoGXWWkLp2FxwaPMyLsUPgZd3DHVLbHB3ZqKLWQ3s",
+        "rank": 18,
+        "alpha": 12200.373062877,
+        "usd": 11411.121889905999,
+        "firstFunded": "2026-02-21T04:12:48Z",
+        "days": 119
+      },
+      {
+        "ck": "5H8SwoePPRYaknriaC8CvgCYtXKD5MK9fRB9dvq14EV8otDt",
+        "rank": 15,
+        "alpha": 17090.194687256,
+        "usd": 15984.617330489671,
+        "firstFunded": "2026-02-02T21:55:48Z",
+        "days": 137
+      },
+      {
+        "ck": "5FFMceCxJufR8rKeLP8s8A2YcyENrcwaQMb47A7M4oKDhbXL",
+        "rank": 2,
+        "alpha": 325828.742265171,
+        "usd": 304750.6395189626,
+        "firstFunded": "2026-01-24T15:45:12Z",
+        "days": 146
+      },
+      {
+        "ck": "5Gj5coRFcbf79kcAAhPqYpVosiF7nNZsZscRAHcgwemnoH4B",
+        "rank": 7,
+        "alpha": 33358.825035541,
+        "usd": 31200.81792805553,
+        "firstFunded": "2026-01-18T00:36:12.001Z",
+        "days": 153
+      },
+      {
+        "ck": "5FnNJJVkcfhPqGA5P6LFmUQ86d7B14apo7ERyyofbAvJ9gVE",
+        "rank": 4,
+        "alpha": 60078.297049315,
+        "usd": 56191.78750056653,
+        "firstFunded": "2026-01-14T23:59:48Z",
+        "days": 156
+      },
+      {
+        "ck": "5GjoDduJujeACNfPDRVBBpdEqwRRY8vAygUWjQNwwDAn5EE9",
+        "rank": 11,
+        "alpha": 24342.964016759,
+        "usd": 22768.1996385778,
+        "firstFunded": "2026-01-14T10:15:24Z",
+        "days": 156
+      },
+      {
+        "ck": "5EZYHCoE5rkiZDJMUrhPi23R8e9mWxJgWTusDDk5CPASuP9D",
+        "rank": 10,
+        "alpha": 25370.088219212,
+        "usd": 23728.87841528832,
+        "firstFunded": "2026-01-13T23:59:48Z",
+        "days": 157
+      },
+      {
+        "ck": "5G7ApjPU72v3QxYK9hfVU2V2quiXTDWrVdKWjXZN2FPTHEeV",
+        "rank": 55,
+        "alpha": 5010.243486335,
+        "usd": 4686.1271230097955,
+        "firstFunded": "2026-01-13T23:59:48Z",
+        "days": 157
+      },
+      {
+        "ck": "5EFZf5pnTqLegv6gxCrb6TKBQBGz9xLJNK8x9eR273cSons6",
+        "rank": 8,
+        "alpha": 31301.220092813,
+        "usd": 29276.320973595786,
+        "firstFunded": "2026-01-13T10:02:12Z",
+        "days": 157
+      },
+      {
+        "ck": "5DLmDmaemU3rnQY5HCeWLCvvsSaw4wKD82aX7SwDWFEnuyi5",
+        "rank": 45,
+        "alpha": 5654.369519287,
+        "usd": 5288.584165562898,
+        "firstFunded": "2026-01-10T18:48:48Z",
+        "days": 160
+      },
+      {
+        "ck": "5CX9HWTx2J4VRvwR5VLnWNRVxPDHHyFZ6piyogoPUAWmCPHp",
+        "rank": 16,
+        "alpha": 15309.35670409,
+        "usd": 14318.983075956054,
+        "firstFunded": "2026-01-09T23:59:48Z",
+        "days": 161
+      },
+      {
+        "ck": "5EqqEM18K9X2Zcp54WCdEwHxZPe39Pb7cXDRXxdVu1F6wFWh",
+        "rank": 9,
+        "alpha": 26702.000020894,
+        "usd": 24974.627855759212,
+        "firstFunded": "2026-01-09T16:05:24Z",
+        "days": 161
+      },
+      {
+        "ck": "5H3XwzydgE2XUGoJCR4dSj7tkd7uxZDJqik69hux2DBcruom",
+        "rank": 23,
+        "alpha": 11520.842483059,
+        "usd": 10775.55064680401,
+        "firstFunded": "2026-01-09T16:04:36Z",
+        "days": 161
+      },
+      {
+        "ck": "5FNM2TdFcEryhMVYARyzHDSwDYYQcWSvzf4yEbmR8xYRMokm",
+        "rank": 26,
+        "alpha": 10760.97988908,
+        "usd": 10064.844126978414,
+        "firstFunded": "2026-01-09T13:26:12Z",
+        "days": 161
+      },
+      {
+        "ck": "5FNM2TdFcEryhMVYARyzHDSwDYYQcWSvzf4yEbmR8xYRMokm",
+        "rank": 39,
+        "alpha": 6103.818624089,
+        "usd": 5708.9580749317975,
+        "firstFunded": "2026-01-09T13:26:12Z",
+        "days": 161
+      },
+      {
+        "ck": "5FnumZwTeKy35oxdQw3jNKjKCkgQ8jZ4F8E7bwY6bP3ncTZP",
+        "rank": 17,
+        "alpha": 12636.984279596,
+        "usd": 11819.488403560721,
+        "firstFunded": "2026-01-07T23:59:48Z",
+        "days": 163
+      },
+      {
+        "ck": "5Cq9rCPcvSrAKxqJWgDy5QnFY623XY8m1gEyZiUuegtNs1gJ",
+        "rank": 22,
+        "alpha": 11787.977659646,
+        "usd": 11025.404650945044,
+        "firstFunded": "2026-01-07T23:59:48Z",
+        "days": 163
+      },
+      {
+        "ck": "5D7Wfw3RA6qVx2McDwFYBpJaWgNskovzfmSHQTiL3p9FdebR",
+        "rank": 27,
+        "alpha": 9679.162239796,
+        "usd": 9053.010062973492,
+        "firstFunded": "2026-01-07T22:56:12.001Z",
+        "days": 163
+      },
+      {
+        "ck": "5DywHvwVgfCHRKtf4BBAocyBQNPsxCGTHsQhcjBGRMkrnQG7",
+        "rank": 13,
+        "alpha": 20887.183192128,
+        "usd": 19535.97583587812,
+        "firstFunded": "2026-01-06T23:59:48Z",
+        "days": 164
+      },
+      {
+        "ck": "5EyB11xwWvViSLXGCDwZoGFCKaKfXXNG3stN3epXBqGfDR8g",
+        "rank": 19,
+        "alpha": 11855.68364878,
+        "usd": 11088.730689415535,
+        "firstFunded": "2026-01-06T01:34:00.001Z",
+        "days": 165
+      },
+      {
+        "ck": "5EyB11xwWvViSLXGCDwZoGFCKaKfXXNG3stN3epXBqGfDR8g",
+        "rank": 24,
+        "alpha": 11496.207158079,
+        "usd": 10752.508999201125,
+        "firstFunded": "2026-01-06T01:34:00.001Z",
+        "days": 165
+      },
+      {
+        "ck": "5Fr4xKuvbYb1yeRLM4DThanx4nSBQw7PP79fU8ZK25tN1EcV",
+        "rank": 35,
+        "alpha": 6939.460834008,
+        "usd": 6490.541970998473,
+        "firstFunded": "2025-12-22T23:59:48Z",
+        "days": 179
+      }
+    ],
+    "netNew": []
+  },
   "history": [
+    {
+      "timestamp": "2026-06-20T03:33:00Z",
+      "price": 0.004025151,
+      "rank": 59,
+      "total_tao": 10255884115454,
+      "total_alpha": 5318588632988892
+    },
     {
       "timestamp": "2026-06-19T03:33:00Z",
       "price": 0.00398659,
@@ -2063,13 +2695,6 @@
       "rank": 52,
       "total_tao": 9379671246762,
       "total_alpha": 3700172719633667
-    },
-    {
-      "timestamp": "2025-12-01T21:06:24Z",
-      "price": 0.00421745845704821,
-      "rank": 50,
-      "total_tao": 9381995362118,
-      "total_alpha": 3692972719633667
     }
   ],
   "holders": [
@@ -2077,12 +2702,12 @@
       "rank": 1,
       "ck": "5F6aRdsBHajN2NhZHBTB6ibBFu7YuZZEWruWzB8x6B6GiZ4D",
       "hk": "5FYwKoHYfiuy9m2yM4wbwM5pQyaEP38MBTTZS8RwNKRuQ8mi",
-      "alpha": 538053.436997845,
-      "tao": 2139.728756039,
-      "usd": 482226.2476688792,
-      "pct": 10.126058292099538,
+      "alpha": 538531.11079424,
+      "tao": 2173.846529516,
+      "usd": 503693.1342352744,
+      "pct": 10.123125576213805,
       "firstFunded": "2025-12-03T23:59:48.001Z",
-      "d24": null,
+      "d24": 21466.886566395173,
       "d7": null,
       "d30": null
     },
@@ -2090,12 +2715,12 @@
       "rank": 2,
       "ck": "5FFMceCxJufR8rKeLP8s8A2YcyENrcwaQMb47A7M4oKDhbXL",
       "hk": "5HK5tp6t2S59DywmHRWPBVJeJ86T61KjurYqeooqj8sREpeN",
-      "alpha": 325515.156825066,
-      "tao": 1294.507373601,
-      "usd": 291740.4514892299,
-      "pct": 6.1261302805983995,
+      "alpha": 325828.742265171,
+      "tao": 1315.247469259,
+      "usd": 304750.6395189626,
+      "pct": 6.124818433285225,
       "firstFunded": "2026-01-24T15:45:12Z",
-      "d24": null,
+      "d24": 13010.188029732672,
       "d7": null,
       "d30": null
     },
@@ -2103,12 +2728,12 @@
       "rank": 3,
       "ck": "5GuRLEMgsMQsKSXQ9CjvQGpDxiMuSCcdkyQNz4nuoHURiuaC",
       "hk": "5E2LP6EnZ54m3wS8s1yPvD5c3xo71kQroBw7aUVK32TKeZ5u",
-      "alpha": 196539.933662688,
-      "tao": 781.59922203,
-      "usd": 176147.40137350958,
-      "pct": 3.6988423233540764,
+      "alpha": 196745.855786174,
+      "tao": 794.188649875,
+      "usd": 184018.22060487617,
+      "pct": 3.6983620162365436,
       "firstFunded": "2025-12-03T23:59:48.001Z",
-      "d24": null,
+      "d24": 7870.819231366593,
       "d7": null,
       "d30": null
     },
@@ -2116,12 +2741,12 @@
       "rank": 4,
       "ck": "5FnNJJVkcfhPqGA5P6LFmUQ86d7B14apo7ERyyofbAvJ9gVE",
       "hk": "5E2LP6EnZ54m3wS8s1yPvD5c3xo71kQroBw7aUVK32TKeZ5u",
-      "alpha": 60015.416687976,
-      "tao": 238.669069023,
-      "usd": 53788.354839256215,
-      "pct": 1.1294781633548463,
+      "alpha": 60078.297049315,
+      "tao": 242.513375591,
+      "usd": 56191.78750056653,
+      "pct": 1.1293314968160908,
       "firstFunded": "2026-01-14T23:59:48Z",
-      "d24": null,
+      "d24": 2403.4326613103112,
       "d7": null,
       "d30": null
     },
@@ -2129,12 +2754,12 @@
       "rank": 5,
       "ck": "5FRXwb2qsEhqDQQKcm5m2MF26xTWwW65MHTEtKFFydypuqjG",
       "hk": "5FYwKoHYfiuy9m2yM4wbwM5pQyaEP38MBTTZS8RwNKRuQ8mi",
-      "alpha": 58686.28999358,
-      "tao": 233.383403301,
-      "usd": 52597.13527913285,
-      "pct": 1.1044642642519336,
+      "alpha": 58861.272873304,
+      "tao": 237.600709028,
+      "usd": 55053.49352030048,
+      "pct": 1.1064542882090012,
       "firstFunded": "2026-05-05T12:43:36Z",
-      "d24": null,
+      "d24": 2456.3582411676252,
       "d7": null,
       "d30": null
     },
@@ -2142,12 +2767,12 @@
       "rank": 6,
       "ck": "5F6aRdsBHajN2NhZHBTB6ibBFu7YuZZEWruWzB8x6B6GiZ4D",
       "hk": "5F6aRdsBHajN2NhZHBTB6ibBFu7YuZZEWruWzB8x6B6GiZ4D",
-      "alpha": 40351.553699382,
-      "tao": 160.469897345,
-      "usd": 36164.7691288396,
-      "pct": 0.7594081866971949,
+      "alpha": 41456.185604196,
+      "tao": 167.342950845,
+      "usd": 38774.35424204684,
+      "pct": 0.7792793477858099,
       "firstFunded": "2025-12-03T23:59:48.001Z",
-      "d24": null,
+      "d24": -443451.8934268324,
       "d7": null,
       "d30": null
     },
@@ -2155,12 +2780,12 @@
       "rank": 7,
       "ck": "5Gj5coRFcbf79kcAAhPqYpVosiF7nNZsZscRAHcgwemnoH4B",
       "hk": "5GKH9FPPnWSUoeeTJp19wVtd84XqFW4pyK2ijV2GsFbhTrP1",
-      "alpha": 33325.866843769,
-      "tao": 132.53017396,
-      "usd": 29868.051411311575,
-      "pct": 0.6271861623590069,
+      "alpha": 33358.825035541,
+      "tao": 134.656967032,
+      "usd": 31200.81792805553,
+      "pct": 0.6270679040467766,
       "firstFunded": "2026-01-18T00:36:12.001Z",
-      "d24": null,
+      "d24": 1332.7665167439554,
       "d7": null,
       "d30": null
     },
@@ -2168,12 +2793,12 @@
       "rank": 8,
       "ck": "5EFZf5pnTqLegv6gxCrb6TKBQBGz9xLJNK8x9eR273cSons6",
       "hk": "5HK5tp6t2S59DywmHRWPBVJeJ86T61KjurYqeooqj8sREpeN",
-      "alpha": 31271.095043653,
-      "tao": 124.358765685,
-      "usd": 28026.47801585085,
-      "pct": 0.5885157672008021,
+      "alpha": 31301.220092813,
+      "tao": 126.351193653,
+      "usd": 29276.320973595786,
+      "pct": 0.588389742648164,
       "firstFunded": "2026-01-13T10:02:12Z",
-      "d24": null,
+      "d24": 1249.8429577449351,
       "d7": null,
       "d30": null
     },
@@ -2181,12 +2806,12 @@
       "rank": 9,
       "ck": "5EqqEM18K9X2Zcp54WCdEwHxZPe39Pb7cXDRXxdVu1F6wFWh",
       "hk": "5E2LP6EnZ54m3wS8s1yPvD5c3xo71kQroBw7aUVK32TKeZ5u",
-      "alpha": 26674.052634029,
-      "tao": 106.077265818,
-      "usd": 23906.414172365337,
-      "pct": 0.5020003465934383,
-      "firstFunded": null,
-      "d24": null,
+      "alpha": 26702.000020894,
+      "tao": 107.785880728,
+      "usd": 24974.627855759212,
+      "pct": 0.501935160159859,
+      "firstFunded": "2026-01-09T16:05:24Z",
+      "d24": 1068.2136833938748,
       "d7": null,
       "d30": null
     },
@@ -2194,12 +2819,12 @@
       "rank": 10,
       "ck": "5EZYHCoE5rkiZDJMUrhPi23R8e9mWxJgWTusDDk5CPASuP9D",
       "hk": "5E2LP6EnZ54m3wS8s1yPvD5c3xo71kQroBw7aUVK32TKeZ5u",
-      "alpha": 25343.534864793,
-      "tao": 100.786068076,
-      "usd": 22713.947872327353,
-      "pct": 0.4769602677396869,
+      "alpha": 25370.088219212,
+      "tao": 102.409456247,
+      "usd": 23728.87841528832,
+      "pct": 0.4768983328445664,
       "firstFunded": "2026-01-13T23:59:48Z",
-      "d24": null,
+      "d24": 1014.9305429609667,
       "d7": null,
       "d30": null
     },
@@ -2207,12 +2832,12 @@
       "rank": 11,
       "ck": "5GjoDduJujeACNfPDRVBBpdEqwRRY8vAygUWjQNwwDAn5EE9",
       "hk": "5GP7c3fFazW9GXK8Up3qgu2DJBk8inu4aK9TZy3RuoSWVCMi",
-      "alpha": 24322.696208348,
-      "tao": 96.72640099,
-      "usd": 21799.029091083965,
-      "pct": 0.4577482879785911,
+      "alpha": 24342.964016759,
+      "tao": 98.263344095,
+      "usd": 22768.1996385778,
+      "pct": 0.45759079967630556,
       "firstFunded": "2026-01-14T10:15:24Z",
-      "d24": null,
+      "d24": 969.1705474938353,
       "d7": null,
       "d30": null
     },
@@ -2220,12 +2845,12 @@
       "rank": 12,
       "ck": "5HeNFrj2pMf3odu3FSGe7HhUNpCvEK7hrHjaUbRyWR1DPMGM",
       "hk": "5HK5tp6t2S59DywmHRWPBVJeJ86T61KjurYqeooqj8sREpeN",
-      "alpha": 22992.963792216,
-      "tao": 91.438326437,
-      "usd": 20607.266657696357,
-      "pct": 0.4327229893135053,
+      "alpha": 23015.114093113,
+      "tao": 92.90331588,
+      "usd": 21526.24931018734,
+      "pct": 0.43263032616975217,
       "firstFunded": "2026-06-14T23:59:48Z",
-      "d24": null,
+      "d24": 918.982652490984,
       "d7": null,
       "d30": null
     },
@@ -2233,12 +2858,12 @@
       "rank": 13,
       "ck": "5DywHvwVgfCHRKtf4BBAocyBQNPsxCGTHsQhcjBGRMkrnQG7",
       "hk": "5DXdHixxtCvoa6GHKs2Jgrdzc61882Ftx1zN2sYFQuwgL1S1",
-      "alpha": 20866.803902185,
-      "tao": 82.98302229,
-      "usd": 18701.71223627762,
-      "pct": 0.3927090845517296,
+      "alpha": 20887.183192128,
+      "tao": 84.313663191,
+      "usd": 19535.97583587812,
+      "pct": 0.39263020120685593,
       "firstFunded": "2026-01-06T23:59:48Z",
-      "d24": null,
+      "d24": 834.2635996004974,
       "d7": null,
       "d30": null
     },
@@ -2246,12 +2871,12 @@
       "rank": 14,
       "ck": "5G9CSvpfupX1smaKmvCxb7zhMS5gHfJvAoxCEsq3t18yER5E",
       "hk": "5E9vRSxypx39uaz747ZbwA2ey6gFGqFbxU6FuoaVd37KQs25",
-      "alpha": 18684.562359093,
-      "tao": 74.304692851,
-      "usd": 16745.895065717028,
-      "pct": 0.3516397342729034,
+      "alpha": 18700.795172404,
+      "tao": 75.48804121,
+      "usd": 17491.02687705011,
+      "pct": 0.35153121910839735,
       "firstFunded": "2026-03-05T23:59:48Z",
-      "d24": null,
+      "d24": 745.1318113330817,
       "d7": null,
       "d30": null
     },
@@ -2259,12 +2884,12 @@
       "rank": 15,
       "ck": "5H8SwoePPRYaknriaC8CvgCYtXKD5MK9fRB9dvq14EV8otDt",
       "hk": "5GP7c3fFazW9GXK8Up3qgu2DJBk8inu4aK9TZy3RuoSWVCMi",
-      "alpha": 17075.965491855,
-      "tao": 67.907631264,
-      "usd": 15304.202516369662,
-      "pct": 0.32136626229765436,
-      "firstFunded": null,
-      "d24": null,
+      "alpha": 17090.194687256,
+      "tao": 68.986655858,
+      "usd": 15984.617330489671,
+      "pct": 0.3212556962324431,
+      "firstFunded": "2026-02-02T21:55:48Z",
+      "d24": 680.4148141200094,
       "d7": null,
       "d30": null
     },
@@ -2272,12 +2897,12 @@
       "rank": 16,
       "ck": "5CX9HWTx2J4VRvwR5VLnWNRVxPDHHyFZ6piyogoPUAWmCPHp",
       "hk": "5GP7c3fFazW9GXK8Up3qgu2DJBk8inu4aK9TZy3RuoSWVCMi",
-      "alpha": 15296.610223902,
-      "tao": 60.831498351,
-      "usd": 13709.46906568735,
-      "pct": 0.2878791513032892,
-      "firstFunded": null,
-      "d24": null,
+      "alpha": 15309.35670409,
+      "tao": 61.798086077,
+      "usd": 14318.983075956054,
+      "pct": 0.287780106478876,
+      "firstFunded": "2026-01-09T23:59:48Z",
+      "d24": 609.5140102687037,
       "d7": null,
       "d30": null
     },
@@ -2285,12 +2910,12 @@
       "rank": 17,
       "ck": "5FnumZwTeKy35oxdQw3jNKjKCkgQ8jZ4F8E7bwY6bP3ncTZP",
       "hk": "5HK5tp6t2S59DywmHRWPBVJeJ86T61KjurYqeooqj8sREpeN",
-      "alpha": 12624.822141138,
-      "tao": 50.206342191,
-      "usd": 11314.899580432793,
-      "pct": 0.23759663285835364,
+      "alpha": 12636.984279596,
+      "tao": 51.010728756,
+      "usd": 11819.488403560721,
+      "pct": 0.23754575400169864,
       "firstFunded": "2026-01-07T23:59:48Z",
-      "d24": null,
+      "d24": 504.58882312792775,
       "d7": null,
       "d30": null
     },
@@ -2298,12 +2923,12 @@
       "rank": 18,
       "ck": "5GF7kTAkoGXWWkLp2FxwaPMyLsUPgZd3DHVLbHB3ZqKLWQ3s",
       "hk": "5GpDE9kN55cxaa5Ao6k7VQ6LCQVGBfr4Nexdpp51NwoB3fEz",
-      "alpha": 12181.453122248,
-      "tao": 48.44315405,
-      "usd": 10917.533512995973,
-      "pct": 0.22925251641660865,
+      "alpha": 12200.373062877,
+      "tao": 49.248294313,
+      "usd": 11411.121889905999,
+      "pct": 0.2293384841035652,
       "firstFunded": "2026-02-21T04:12:48Z",
-      "d24": null,
+      "d24": 493.58837691002554,
       "d7": null,
       "d30": null
     },
@@ -2311,12 +2936,12 @@
       "rank": 19,
       "ck": "5EyB11xwWvViSLXGCDwZoGFCKaKfXXNG3stN3epXBqGfDR8g",
       "hk": "5FYwKoHYfiuy9m2yM4wbwM5pQyaEP38MBTTZS8RwNKRuQ8mi",
-      "alpha": 11845.167730008,
-      "tao": 47.105815648,
-      "usd": 10616.140321153389,
-      "pct": 0.2229236924551748,
+      "alpha": 11855.68364878,
+      "tao": 47.856913441,
+      "usd": 11088.730689415535,
+      "pct": 0.2228591291438316,
       "firstFunded": "2026-01-06T01:34:00.001Z",
-      "d24": null,
+      "d24": 472.5903682621465,
       "d7": null,
       "d30": null
     },
@@ -2324,12 +2949,12 @@
       "rank": 20,
       "ck": "5Frzb41rbrzPmnmqYeox8uAC4egJsSodHx5abxw3YT8rxxps",
       "hk": "5GKH9FPPnWSUoeeTJp19wVtd84XqFW4pyK2ijV2GsFbhTrP1",
-      "alpha": 11828.386269565,
-      "tao": 47.039079203,
-      "usd": 10601.100066464902,
-      "pct": 0.2226078687191152,
+      "alpha": 11840.084156521,
+      "tao": 47.793944188,
+      "usd": 11074.140340017188,
+      "pct": 0.22256589516737638,
       "firstFunded": "2025-11-08T23:59:48.001Z",
-      "d24": null,
+      "d24": 473.0402735522857,
       "d7": null,
       "d30": null
     },
@@ -2337,12 +2962,12 @@
       "rank": 21,
       "ck": "5GEZEgicrmPbWr1tMLM5CaikXEkKEub9sz4mAxhqRgZX6M2j",
       "hk": "5GKH9FPPnWSUoeeTJp19wVtd84XqFW4pyK2ijV2GsFbhTrP1",
-      "alpha": 11828.361605947,
-      "tao": 47.038981121,
-      "usd": 10601.077961927262,
-      "pct": 0.22260740455474715,
+      "alpha": 11840.059468511,
+      "tao": 47.793844531,
+      "usd": 11074.117248899209,
+      "pct": 0.22256543109051916,
       "firstFunded": "2026-06-08T23:59:48.001Z",
-      "d24": null,
+      "d24": 473.03928697194715,
       "d7": null,
       "d30": null
     },
@@ -2350,12 +2975,12 @@
       "rank": 22,
       "ck": "5Cq9rCPcvSrAKxqJWgDy5QnFY623XY8m1gEyZiUuegtNs1gJ",
       "hk": "5E2LP6EnZ54m3wS8s1yPvD5c3xo71kQroBw7aUVK32TKeZ5u",
-      "alpha": 11775.639888253,
-      "tao": 46.829317605,
-      "usd": 10553.82652862835,
-      "pct": 0.2216151923506809,
-      "firstFunded": null,
-      "d24": null,
+      "alpha": 11787.977659646,
+      "tao": 47.583609956,
+      "usd": 11025.404650945044,
+      "pct": 0.22158641487249747,
+      "firstFunded": "2026-01-07T23:59:48Z",
+      "d24": 471.57812231669413,
       "d7": null,
       "d30": null
     },
@@ -2363,12 +2988,12 @@
       "rank": 23,
       "ck": "5H3XwzydgE2XUGoJCR4dSj7tkd7uxZDJqik69hux2DBcruom",
       "hk": "5HK5tp6t2S59DywmHRWPBVJeJ86T61KjurYqeooqj8sREpeN",
-      "alpha": 11509.754546386,
-      "tao": 45.771945841,
-      "usd": 10315.52883939757,
-      "pct": 0.2166112832858442,
+      "alpha": 11520.842483059,
+      "tao": 46.505286225,
+      "usd": 10775.55064680401,
+      "pct": 0.216564898224321,
       "firstFunded": "2026-01-09T16:04:36Z",
-      "d24": null,
+      "d24": 460.0218074064396,
       "d7": null,
       "d30": null
     },
@@ -2376,350 +3001,27 @@
       "rank": 24,
       "ck": "5EyB11xwWvViSLXGCDwZoGFCKaKfXXNG3stN3epXBqGfDR8g",
       "hk": "5DvDypN8BPG4ThSTes2YQ64PUSYMngoQYnzR1Dw1a67TdiFp",
-      "alpha": 11492.880166299,
-      "tao": 45.704839873,
-      "usd": 10300.405306074246,
-      "pct": 0.2162937108206307,
+      "alpha": 11496.207158079,
+      "tao": 46.40584273,
+      "usd": 10752.508999201125,
+      "pct": 0.21610181172219567,
       "firstFunded": "2026-01-06T01:34:00.001Z",
-      "d24": null,
+      "d24": 136.36867804773647,
       "d7": null,
       "d30": null
     },
     {
       "rank": 25,
-      "ck": "5FNM2TdFcEryhMVYARyzHDSwDYYQcWSvzf4yEbmR8xYRMokm",
+      "ck": "5CSyxKQB7M2YmWdZPBnWWLqBq3ucQXCPuhdQ3aQfjyu37Zr2",
       "hk": "5CsvRJXuR955WojnGMdok1hbhffZyB4N5ocrv82f3p5A2zVp",
-      "alpha": 10750.931626312,
-      "tao": 42.754261887,
-      "usd": 9635.439643194102,
-      "pct": 0.20233038738650008,
-      "firstFunded": "2026-01-09T13:26:12Z",
+      "alpha": 11255.912176267,
+      "tao": 45.43586272,
+      "usd": 10527.758877815491,
+      "pct": 0.2115848279724002,
+      "firstFunded": null,
       "d24": null,
       "d7": null,
       "d30": null
     }
-  ],
-  "newWallets": {
-    "watched": 25,
-    "resolvedCount": 21,
-    "today": 0,
-    "d7": 1,
-    "d30": 2,
-    "runRate30": 0.06666666666666667,
-    "cap7": 20607.266657696357,
-    "cap30": 31208.34461962362,
-    "daily": [
-      {
-        "d": "2025-11-08",
-        "count": 1,
-        "usd": 10601.100066464902,
-        "alpha": 11828.386269565
-      },
-      {
-        "d": "2025-12-03",
-        "count": 3,
-        "usd": 694538.4181712284,
-        "alpha": 774944.924359915
-      },
-      {
-        "d": "2026-01-06",
-        "count": 3,
-        "usd": 39618.257863505256,
-        "alpha": 44204.851798492
-      },
-      {
-        "d": "2026-01-07",
-        "count": 1,
-        "usd": 11314.899580432793,
-        "alpha": 12624.822141138
-      },
-      {
-        "d": "2026-01-09",
-        "count": 2,
-        "usd": 19950.96848259167,
-        "alpha": 22260.686172698
-      },
-      {
-        "d": "2026-01-13",
-        "count": 2,
-        "usd": 50740.4258881782,
-        "alpha": 56614.629908446004
-      },
-      {
-        "d": "2026-01-14",
-        "count": 2,
-        "usd": 75587.38393034018,
-        "alpha": 84338.112896324
-      },
-      {
-        "d": "2026-01-18",
-        "count": 1,
-        "usd": 29868.051411311575,
-        "alpha": 33325.866843769
-      },
-      {
-        "d": "2026-01-24",
-        "count": 1,
-        "usd": 291740.4514892299,
-        "alpha": 325515.156825066
-      },
-      {
-        "d": "2026-02-21",
-        "count": 1,
-        "usd": 10917.533512995973,
-        "alpha": 12181.453122248
-      },
-      {
-        "d": "2026-03-05",
-        "count": 1,
-        "usd": 16745.895065717028,
-        "alpha": 18684.562359093
-      },
-      {
-        "d": "2026-05-05",
-        "count": 1,
-        "usd": 52597.13527913285,
-        "alpha": 58686.28999358
-      },
-      {
-        "d": "2026-06-08",
-        "count": 1,
-        "usd": 10601.077961927262,
-        "alpha": 11828.361605947
-      },
-      {
-        "d": "2026-06-14",
-        "count": 1,
-        "usd": 20607.266657696357,
-        "alpha": 22992.963792216
-      }
-    ],
-    "weekly": [
-      {
-        "d": "2025-11-03",
-        "count": 1,
-        "usd": 10601.100066464902,
-        "alpha": 11828.386269565
-      },
-      {
-        "d": "2025-12-01",
-        "count": 3,
-        "usd": 694538.4181712284,
-        "alpha": 774944.924359915
-      },
-      {
-        "d": "2026-01-05",
-        "count": 6,
-        "usd": 70884.12592652973,
-        "alpha": 79090.360112328
-      },
-      {
-        "d": "2026-01-12",
-        "count": 5,
-        "usd": 156195.86122982996,
-        "alpha": 174278.609648539
-      },
-      {
-        "d": "2026-01-19",
-        "count": 1,
-        "usd": 291740.4514892299,
-        "alpha": 325515.156825066
-      },
-      {
-        "d": "2026-02-16",
-        "count": 1,
-        "usd": 10917.533512995973,
-        "alpha": 12181.453122248
-      },
-      {
-        "d": "2026-03-02",
-        "count": 1,
-        "usd": 16745.895065717028,
-        "alpha": 18684.562359093
-      },
-      {
-        "d": "2026-05-04",
-        "count": 1,
-        "usd": 52597.13527913285,
-        "alpha": 58686.28999358
-      },
-      {
-        "d": "2026-06-08",
-        "count": 2,
-        "usd": 31208.34461962362,
-        "alpha": 34821.325398163
-      }
-    ],
-    "recent": [
-      {
-        "ck": "5HeNFrj2pMf3odu3FSGe7HhUNpCvEK7hrHjaUbRyWR1DPMGM",
-        "rank": 12,
-        "alpha": 22992.963792216,
-        "usd": 20607.266657696357,
-        "firstFunded": "2026-06-14T23:59:48Z",
-        "days": 4
-      },
-      {
-        "ck": "5GEZEgicrmPbWr1tMLM5CaikXEkKEub9sz4mAxhqRgZX6M2j",
-        "rank": 21,
-        "alpha": 11828.361605947,
-        "usd": 10601.077961927262,
-        "firstFunded": "2026-06-08T23:59:48.001Z",
-        "days": 10
-      },
-      {
-        "ck": "5FRXwb2qsEhqDQQKcm5m2MF26xTWwW65MHTEtKFFydypuqjG",
-        "rank": 5,
-        "alpha": 58686.28999358,
-        "usd": 52597.13527913285,
-        "firstFunded": "2026-05-05T12:43:36Z",
-        "days": 45
-      },
-      {
-        "ck": "5G9CSvpfupX1smaKmvCxb7zhMS5gHfJvAoxCEsq3t18yER5E",
-        "rank": 14,
-        "alpha": 18684.562359093,
-        "usd": 16745.895065717028,
-        "firstFunded": "2026-03-05T23:59:48Z",
-        "days": 105
-      },
-      {
-        "ck": "5GF7kTAkoGXWWkLp2FxwaPMyLsUPgZd3DHVLbHB3ZqKLWQ3s",
-        "rank": 18,
-        "alpha": 12181.453122248,
-        "usd": 10917.533512995973,
-        "firstFunded": "2026-02-21T04:12:48Z",
-        "days": 118
-      },
-      {
-        "ck": "5FFMceCxJufR8rKeLP8s8A2YcyENrcwaQMb47A7M4oKDhbXL",
-        "rank": 2,
-        "alpha": 325515.156825066,
-        "usd": 291740.4514892299,
-        "firstFunded": "2026-01-24T15:45:12Z",
-        "days": 146
-      },
-      {
-        "ck": "5Gj5coRFcbf79kcAAhPqYpVosiF7nNZsZscRAHcgwemnoH4B",
-        "rank": 7,
-        "alpha": 33325.866843769,
-        "usd": 29868.051411311575,
-        "firstFunded": "2026-01-18T00:36:12.001Z",
-        "days": 152
-      },
-      {
-        "ck": "5FnNJJVkcfhPqGA5P6LFmUQ86d7B14apo7ERyyofbAvJ9gVE",
-        "rank": 4,
-        "alpha": 60015.416687976,
-        "usd": 53788.354839256215,
-        "firstFunded": "2026-01-14T23:59:48Z",
-        "days": 155
-      },
-      {
-        "ck": "5GjoDduJujeACNfPDRVBBpdEqwRRY8vAygUWjQNwwDAn5EE9",
-        "rank": 11,
-        "alpha": 24322.696208348,
-        "usd": 21799.029091083965,
-        "firstFunded": "2026-01-14T10:15:24Z",
-        "days": 156
-      },
-      {
-        "ck": "5EZYHCoE5rkiZDJMUrhPi23R8e9mWxJgWTusDDk5CPASuP9D",
-        "rank": 10,
-        "alpha": 25343.534864793,
-        "usd": 22713.947872327353,
-        "firstFunded": "2026-01-13T23:59:48Z",
-        "days": 156
-      },
-      {
-        "ck": "5EFZf5pnTqLegv6gxCrb6TKBQBGz9xLJNK8x9eR273cSons6",
-        "rank": 8,
-        "alpha": 31271.095043653,
-        "usd": 28026.47801585085,
-        "firstFunded": "2026-01-13T10:02:12Z",
-        "days": 157
-      },
-      {
-        "ck": "5H3XwzydgE2XUGoJCR4dSj7tkd7uxZDJqik69hux2DBcruom",
-        "rank": 23,
-        "alpha": 11509.754546386,
-        "usd": 10315.52883939757,
-        "firstFunded": "2026-01-09T16:04:36Z",
-        "days": 161
-      },
-      {
-        "ck": "5FNM2TdFcEryhMVYARyzHDSwDYYQcWSvzf4yEbmR8xYRMokm",
-        "rank": 25,
-        "alpha": 10750.931626312,
-        "usd": 9635.439643194102,
-        "firstFunded": "2026-01-09T13:26:12Z",
-        "days": 161
-      },
-      {
-        "ck": "5FnumZwTeKy35oxdQw3jNKjKCkgQ8jZ4F8E7bwY6bP3ncTZP",
-        "rank": 17,
-        "alpha": 12624.822141138,
-        "usd": 11314.899580432793,
-        "firstFunded": "2026-01-07T23:59:48Z",
-        "days": 162
-      },
-      {
-        "ck": "5DywHvwVgfCHRKtf4BBAocyBQNPsxCGTHsQhcjBGRMkrnQG7",
-        "rank": 13,
-        "alpha": 20866.803902185,
-        "usd": 18701.71223627762,
-        "firstFunded": "2026-01-06T23:59:48Z",
-        "days": 163
-      },
-      {
-        "ck": "5EyB11xwWvViSLXGCDwZoGFCKaKfXXNG3stN3epXBqGfDR8g",
-        "rank": 19,
-        "alpha": 11845.167730008,
-        "usd": 10616.140321153389,
-        "firstFunded": "2026-01-06T01:34:00.001Z",
-        "days": 164
-      },
-      {
-        "ck": "5EyB11xwWvViSLXGCDwZoGFCKaKfXXNG3stN3epXBqGfDR8g",
-        "rank": 24,
-        "alpha": 11492.880166299,
-        "usd": 10300.405306074246,
-        "firstFunded": "2026-01-06T01:34:00.001Z",
-        "days": 164
-      },
-      {
-        "ck": "5F6aRdsBHajN2NhZHBTB6ibBFu7YuZZEWruWzB8x6B6GiZ4D",
-        "rank": 1,
-        "alpha": 538053.436997845,
-        "usd": 482226.2476688792,
-        "firstFunded": "2025-12-03T23:59:48.001Z",
-        "days": 197
-      },
-      {
-        "ck": "5GuRLEMgsMQsKSXQ9CjvQGpDxiMuSCcdkyQNz4nuoHURiuaC",
-        "rank": 3,
-        "alpha": 196539.933662688,
-        "usd": 176147.40137350958,
-        "firstFunded": "2025-12-03T23:59:48.001Z",
-        "days": 197
-      },
-      {
-        "ck": "5F6aRdsBHajN2NhZHBTB6ibBFu7YuZZEWruWzB8x6B6GiZ4D",
-        "rank": 6,
-        "alpha": 40351.553699382,
-        "usd": 36164.7691288396,
-        "firstFunded": "2025-12-03T23:59:48.001Z",
-        "days": 197
-      },
-      {
-        "ck": "5Frzb41rbrzPmnmqYeox8uAC4egJsSodHx5abxw3YT8rxxps",
-        "rank": 20,
-        "alpha": 11828.386269565,
-        "usd": 10601.100066464902,
-        "firstFunded": "2025-11-08T23:59:48.001Z",
-        "days": 222
-      }
-    ],
-    "netNew": []
-  }
+  ]
 }
