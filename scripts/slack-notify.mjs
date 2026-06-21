@@ -22,8 +22,16 @@ const blocks = [
   { type:'header', text:{ type:'plain_text', text:`🟢 New SN25 Buyer${flagged.length>1 ? 's ('+flagged.length+')' : ''}`, emoji:true } }
 ];
 for (const f of flagged) {
-  blocks.push({ type:'section', text:{ type:'mrkdwn',
-    text:`*Bought ${usd(f.usd)}*  ·  ${num(f.alpha)} α  ·  rank #${f.rank}\nWallet: <https://taostats.io/coldkey/${f.ck}|${short(f.ck)}>  ·  first buy ${f.firstFunded.slice(0,10)} (${f.days}d ago)` } });
+  const created = f.created ? `${f.created.slice(0,10)}${f.ageDays!=null?' ('+f.ageDays+'d old)':''}` : 'unknown';
+  const holdings = f.totalTao!=null ? `τ${num(f.totalTao)}${f.totalUsd!=null?' ('+usd(f.totalUsd)+')':''}` : 'unknown';
+  const breadth = f.subnetsHeld!=null ? `${f.subnetsHeld} subnet${f.subnetsHeld===1?'':'s'}` : '';
+  const profile = f.profile ? `*${f.profile}*${f.profileReason?` (${f.profileReason})`:''}` : '';
+  blocks.push({ type:'section', text:{ type:'mrkdwn', text:
+    `*Bought ${usd(f.usd)}*  ·  ${num(f.alpha)} α  ·  rank #${f.rank}\n` +
+    `Wallet: <https://taostats.io/coldkey/${f.ck}|${short(f.ck)}>  ·  first buy ${f.firstFunded.slice(0,10)} (${f.days}d ago)\n` +
+    `Account created: ${created}\n` +
+    `Total holdings: ${holdings}${breadth?'  ·  '+breadth:''}\n` +
+    `Profile: ${profile}` } });
 }
 blocks.push({ type:'divider' });
 blocks.push({ type:'context', elements:[{ type:'mrkdwn',

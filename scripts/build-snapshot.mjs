@@ -50,6 +50,38 @@ const nearestUsdInHistory = (hist, ck, days) => {
   return best ? best.usd : null;
 };
 
+// Per-wallet profile for flagged buyers: creation date, total holdings, trader-vs-holder.
+async function analyzeWallet(ck, hk, taoUsd){
+  const o={ created:null, ageDays:null, totalTao:null, totalUsd:null, subnetsHeld:null, txCount:null, sells:null, profile:'Unknown', profileReason:'' };
+  try{
+    const pos=(await get('/api/dtao/stake_balance/latest/v1',{coldkey:ck,limit:200})).data||[];
+    o.totalTao=pos.reduce((a,x)=>a+(toF(x.balance_as_tao)||0)/RAO,0);
+    o.totalUsd= taoUsd? o.totalTao*taoUsd : null;
+    o.subnetsHeld=new Set(pos.map(x=>x.netuid)).size;
+  }catch(e){ console.error('an-pos',e.message); }
+  await sleep(300);
+  try{
+    const tr=await get('/api/transfer/v1',{address:ck,limit:200});
+    const arr=tr.data||[]; o.txCount=tr.pagination?.total_items ?? arr.length;
+    const ts=arr.map(x=>x.timestamp).filter(Boolean).sort();
+    if(ts.length){ o.created=ts[0]; o.ageDays=Math.floor((Date.now()-new Date(ts[0]).getTime())/86400000); }
+  }catch(e){ console.error('an-tx',e.message); }
+  await sleep(300);
+  try{
+    let h=(await get('/api/dtao/stake_balance/history/v1',{coldkey:ck,hotkey:hk,netuid:NETUID,limit:400})).data;
+    h=(h||[]).filter(x=>x.timestamp).sort((a,b)=>new Date(a.timestamp)-new Date(b.timestamp));
+    let sells=0; for(let i=1;i<h.length;i++){ if(((toF(h[i].balance)||0)-(toF(h[i-1].balance)||0)) < -1e6) sells++; }
+    o.sells=sells;
+  }catch(e){ console.error('an-hist',e.message); }
+  const subn=o.subnetsHeld||0, sells=o.sells||0, age=o.ageDays||0, tx=o.txCount||0;
+  const txPerDay= age>0? tx/age : tx;
+  if(sells>=2 || subn>=6 || txPerDay>1) o.profile='Frequent trader';
+  else if(subn<=2 && sells===0) o.profile='Buy & hold';
+  else o.profile='Accumulator';
+  o.profileReason=`${subn} subnet${subn===1?'':'s'}, ${sells} sell${sells===1?'':'s'}, ${tx} txns${age?' over '+age+'d':''}`;
+  return o;
+}
+
 // New SN25 buyers: bucket watched holders by their first-SN25-stake date (frequency),
 // plus an unbiased net-new holder count from the rolling holder-count history.
 function computeNewWallets(holders, hist){
@@ -189,6 +221,11 @@ async function main(){
     }
   }
   flagged.sort((a,b)=>b.usd-a.usd);
+  // enrich each flagged buyer with creation date, total holdings, trader profile
+  for(const f of flagged){
+    const hk=allHolders.find(h=>h.ck===f.ck)?.hk;
+    Object.assign(f, await analyzeWallet(f.ck, hk, taoUsd));
+  }
   // rolling total of all buyers notified in the last 7 days
   notifiedLog = notifiedLog.filter(x => (nowMs - new Date(x.at).getTime()) <= 45*86400000); // retain 45d
   const recent7 = notifiedLog.filter(x => (nowMs - new Date(x.at).getTime()) <= 7*86400000);
