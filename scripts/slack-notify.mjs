@@ -1,7 +1,7 @@
 // Posts a Slack alert when the daily run flags new SN25 buyers.
 // Reads data/sn25-alerts-pending.json (written by build-snapshot.mjs) and POSTs
-// to the Slack Incoming Webhook in env SLACK_WEBHOOK_URL. No-ops safely if the
-// webhook is unset or there are no new flags, so the workflow never fails on it.
+// a Block Kit message to the Slack Incoming Webhook in env SLACK_WEBHOOK_URL.
+// No-ops safely if the webhook is unset or there are no new flags.
 
 import { readFileSync, existsSync } from 'node:fs';
 
@@ -11,21 +11,26 @@ if (!url) { console.error('SLACK_WEBHOOK_URL not set, skipping.'); process.exit(
 const path = 'data/sn25-alerts-pending.json';
 if (!existsSync(path)) { console.error('no pending file, skipping.'); process.exit(0); }
 
-const { flagged = [], thresholdUsd, fundedDays } = JSON.parse(readFileSync(path, 'utf8'));
+const { flagged = [], thresholdUsd = 10000, fundedDays = 7, total7dUsd = 0, total7dCount = 0 } = JSON.parse(readFileSync(path, 'utf8'));
 if (!flagged.length) { console.error('no new flags, skipping.'); process.exit(0); }
 
 const short = k => k.slice(0,6) + '…' + k.slice(-4);
 const usd = n => '$' + Math.round(n).toLocaleString('en-US');
 const num = n => Math.round(n).toLocaleString('en-US');
 
-const lines = flagged.map(f =>
-  `• <https://taostats.io/coldkey/${f.ck}|${short(f.ck)}>  ·  rank #${f.rank}  ·  *${usd(f.usd)}*  ·  ${num(f.alpha)} α  ·  first bought ${f.firstFunded.slice(0,10)} (${f.days}d ago)`
-);
+const blocks = [
+  { type:'header', text:{ type:'plain_text', text:`🟢 New SN25 Buyer${flagged.length>1 ? 's ('+flagged.length+')' : ''}`, emoji:true } }
+];
+for (const f of flagged) {
+  blocks.push({ type:'section', text:{ type:'mrkdwn',
+    text:`*Bought ${usd(f.usd)}*  ·  ${num(f.alpha)} α  ·  rank #${f.rank}\nWallet: <https://taostats.io/coldkey/${f.ck}|${short(f.ck)}>  ·  first buy ${f.firstFunded.slice(0,10)} (${f.days}d ago)` } });
+}
+blocks.push({ type:'divider' });
+blocks.push({ type:'context', elements:[{ type:'mrkdwn',
+  text:`*7-day total flagged: ${usd(total7dUsd)}* across ${total7dCount} wallet${total7dCount===1?'':'s'}  ·  threshold ≥${usd(thresholdUsd)} in ${fundedDays}d  ·  <https://haitzupp.github.io/sn25-token-intel/newwallets.html|New Buyers dashboard ↗>` }] });
 
-const header = `:rotating_light: *SN25 Mainframe: ${flagged.length} new buyer${flagged.length>1?'s':''} flagged*  _(≥${usd(thresholdUsd)}, funded ≤${fundedDays}d)_`;
-const footer = `<https://haitzupp.github.io/sn25-token-intel/newwallets.html|Open New Buyers dashboard ↗>`;
-const text = [header, ...lines, footer].join('\n');
+const fallback = `New SN25 buyer flagged (${flagged.length}): ${flagged.map(f=>usd(f.usd)).join(', ')} · 7d total ${usd(total7dUsd)}`;
 
-const r = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ text }) });
+const r = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ text: fallback, blocks }) });
 console.error('slack POST status', r.status);
 if (!r.ok) process.exit(1);

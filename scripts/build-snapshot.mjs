@@ -23,6 +23,7 @@ const SIZE_USD = Number(process.env.SIZE_USD || 25000);    // "with size" thresh
 const FUNDED_DAYS = Number(process.env.FUNDED_DAYS || 7);  // "newly funded" window
 const ALERT_SIZE_USD = Number(process.env.ALERT_SIZE_USD || 10000); // min size to fire a Slack alert
 const PENDING = 'data/sn25-alerts-pending.json';
+const NOTIFIED_LOG = 'data/sn25-notified-log.json';   // rolling log of notified buyers (for 7d total)
 const BUDGET_MS = Number(process.env.BUDGET_MS || 0);
 const FF_BATCH = Number(process.env.FF_BATCH || 25);
 const START = Date.now();
@@ -175,6 +176,7 @@ async function main(){
 
   // ---- flag new buyers for Slack alert (recent + size, once per wallet) ----
   const alerted = new Set(readJ(ALERTED, []));
+  let notifiedLog = readJ(NOTIFIED_LOG, []);
   const nowMs = Date.now();
   const flagged = [];
   for(const h of allHolders){
@@ -183,11 +185,18 @@ async function main(){
     if(days>=0 && days<=FUNDED_DAYS && h.usd>=ALERT_SIZE_USD && !alerted.has(h.ck)){
       flagged.push({ ck:h.ck, rank:h.rank, alpha:h.alpha, usd:h.usd, firstFunded:h.firstFunded, days:Math.floor(days) });
       alerted.add(h.ck);
+      notifiedLog.push({ ck:h.ck, usd:h.usd, at:new Date().toISOString() });
     }
   }
   flagged.sort((a,b)=>b.usd-a.usd);
+  // rolling total of all buyers notified in the last 7 days
+  notifiedLog = notifiedLog.filter(x => (nowMs - new Date(x.at).getTime()) <= 45*86400000); // retain 45d
+  const recent7 = notifiedLog.filter(x => (nowMs - new Date(x.at).getTime()) <= 7*86400000);
+  const total7dUsd = recent7.reduce((a,x)=>a+(x.usd||0),0);
   writeJ(ALERTED, [...alerted]);
-  writeJ(PENDING, { generatedAt:new Date().toISOString(), netuid:NETUID, thresholdUsd:ALERT_SIZE_USD, fundedDays:FUNDED_DAYS, flagged });
+  writeJ(NOTIFIED_LOG, notifiedLog);
+  writeJ(PENDING, { generatedAt:new Date().toISOString(), netuid:NETUID, thresholdUsd:ALERT_SIZE_USD, fundedDays:FUNDED_DAYS,
+    flagged, total7dUsd, total7dCount:recent7.length });
   newWallets.flaggedCount = flagged.length;
 
   // ---- owner emission: 18% cut, derived from subnet alpha emission, cross-checked vs owner hotkey ----
