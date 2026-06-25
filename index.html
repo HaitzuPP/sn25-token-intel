@@ -70,6 +70,15 @@
   .nsort:hover { color: #111; }
   .ntype { white-space: nowrap; }
 
+  /* Tabs */
+  .tabs { display: flex; gap: 2px; padding: 0 24px; border-bottom: 1px solid #e0e0e0; flex-wrap: wrap; }
+  .tab { font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 12px 16px; background: transparent; color: #888; border: none; border-bottom: 2px solid transparent; cursor: pointer; }
+  .tab:hover { color: #111; }
+  .tab.active { color: #111; border-bottom-color: #1a7a3a; }
+  .tabpanel { display: flex; flex-direction: column; gap: 20px; }
+  .tabpanel.hidden { display: none; }
+  @media (max-width: 640px){ .tabs { padding: 0 6px; } .tab { padding: 11px 10px; font-size: 10px; } }
+
   /* Verdict hero */
   .verdict { display: flex; align-items: stretch; gap: 0; border-bottom: 1px solid #e0e0e0; }
   .verdict-accent { width: 5px; flex-shrink: 0; }
@@ -197,9 +206,19 @@
   <div id="content" class="hidden">
     <div class="verdict" id="verdict"></div>
     <div class="stats-bar" id="stats-bar"></div>
-    <div class="signal-grid" id="signal-cards"></div>
+
+    <div class="tabs" id="tabnav">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="price">Price &amp; Rank</button>
+      <button class="tab" data-tab="ownership">Ownership</button>
+      <button class="tab" data-tab="health">Health &amp; Owner</button>
+      <button class="tab" data-tab="alerts">Alerts</button>
+    </div>
 
     <div class="body">
+
+      <div class="tabpanel" data-panel="overview">
+      <div class="signal-grid" id="signal-cards"></div>
 
       <!-- NOTIFICATIONS -->
       <div class="section">
@@ -221,6 +240,9 @@
         <div class="foot-note">From the latest daily snapshot: wallet 24h holdings moves (top 100), new buyers (≤7d), and price / rank changes. Click a header to sort by impact, type, or recency.</div>
       </div>
 
+      </div><!-- /overview -->
+
+      <div class="tabpanel hidden" data-panel="price">
       <!-- A: PRICE ACTION -->
       <div class="section">
         <div class="section-head">
@@ -246,6 +268,9 @@
         </div>
       </div>
 
+      </div><!-- /price -->
+
+      <div class="tabpanel hidden" data-panel="ownership">
       <!-- B: TOP 25 HOLDERS -->
       <div class="section">
         <div class="section-head">
@@ -287,6 +312,9 @@
         </div>
       </div>
 
+      </div><!-- /ownership -->
+
+      <div class="tabpanel hidden" data-panel="health">
       <!-- C2: OWNER EMISSIONS -->
       <div class="section">
         <div class="section-head">
@@ -311,6 +339,9 @@
         <div class="mech-note" id="mech-note"></div>
       </div>
 
+      </div><!-- /health -->
+
+      <div class="tabpanel hidden" data-panel="alerts">
       <!-- E: ALERTS -->
       <div class="section">
         <div class="section-head">
@@ -324,6 +355,7 @@
           <div class="cfg-row"><input type="checkbox" id="a-rank" checked><label for="a-rank">Emission rank falls below #</label><input type="number" id="a-rank-v" value="35"></div>
         </div>
       </div>
+      </div><!-- /alerts -->
 
     </div>
   </div>
@@ -687,6 +719,17 @@ document.querySelectorAll('th.sortable').forEach(th=>th.addEventListener('click'
   const ar=document.createElement('span'); ar.className='arrow'; ar.textContent=SORT.dir<0?' ▼':' ▲'; th.appendChild(ar);
   renderHoldersTable();
 }));
+// Tabs: switch panels and (re)draw that panel's charts now they're visible (Chart.js needs a sized canvas)
+function showTab(name){
+  document.querySelectorAll('#tabnav .tab').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  document.querySelectorAll('.tabpanel').forEach(p=>p.classList.toggle('hidden', p.dataset.panel!==name));
+  if(!STATE) return;
+  if(name==='price'){ drawPriceChart(); drawDailyChart(); drawRankChart(); }
+  else if(name==='ownership'){ renderConcentration(); }
+  else if(name==='health'){ renderOwnerEmission(); }
+}
+document.querySelectorAll('#tabnav .tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+
 document.querySelectorAll('#notif-table .nsort').forEach(th=>th.addEventListener('click',()=>{
   const k=th.dataset.k; if(NSORT.k===k)NSORT.dir*=-1; else {NSORT.k=k; NSORT.dir=(k==='when')?1:-1;}
   document.querySelectorAll('#notif-table .arrow').forEach(a=>a.remove());
