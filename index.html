@@ -66,6 +66,9 @@
   .section-meta { font-size: 10px; color: #999; }
   .conc-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 3px; }
   .foot-note { padding: 9px 16px; border-top: 1px solid #f0f0f0; font-size: 10px; color: #999; background: #fafafa; line-height: 1.5; }
+  .nsort { cursor: pointer; user-select: none; }
+  .nsort:hover { color: #111; }
+  .ntype { white-space: nowrap; }
 
   /* Verdict hero */
   .verdict { display: flex; align-items: stretch; gap: 0; border-bottom: 1px solid #e0e0e0; }
@@ -197,6 +200,26 @@
     <div class="signal-grid" id="signal-cards"></div>
 
     <div class="body">
+
+      <!-- NOTIFICATIONS -->
+      <div class="section">
+        <div class="section-head">
+          <span class="section-title">Notifications &middot; Notable Changes</span>
+          <span class="section-meta" id="notif-meta"></span>
+        </div>
+        <div class="table-scroll">
+          <table id="notif-table">
+            <thead><tr>
+              <th class="nsort ntype" data-k="type">Type</th>
+              <th>Detail</th>
+              <th class="r nsort" data-k="value">Impact <span class="arrow">▼</span></th>
+              <th class="r nsort" data-k="when">When</th>
+            </tr></thead>
+            <tbody id="notif-tbody"></tbody>
+          </table>
+        </div>
+        <div class="foot-note">From the latest daily snapshot: wallet 24h holdings moves (top 100), new buyers (≤7d), and price / rank changes. Click a header to sort by impact, type, or recency.</div>
+      </div>
 
       <!-- A: PRICE ACTION -->
       <div class="section">
@@ -359,7 +382,7 @@ function renderAll(){
     ? Math.round(ageH) + 'h old · daily refresh may have stalled'
     : 'Refreshes daily · day ' + STATE.daysTracked + ' of tracking';
   document.getElementById('footer-snap').textContent = 'Snapshot ' + STATE.day + ' · Pylon Partners';
-  renderVerdict(); renderStats(); renderSignals(); renderHoldersTable(); renderConcentration(); renderOwnerEmission(); renderMechanics();
+  renderVerdict(); renderStats(); renderSignals(); renderNotifications(); renderHoldersTable(); renderConcentration(); renderOwnerEmission(); renderMechanics();
   drawPriceChart(); drawDailyChart(); drawRankChart();
   loadAlertCfg(); evaluateAlerts();
 }
@@ -396,6 +419,46 @@ function renderVerdict(){
          ${tag(0,dBand.c,'Dereg '+dBand.w.toLowerCase())}
        </div>
      </div>`;
+}
+
+// ---- notifications feed (notable changes) ----
+let NSORT = { k:'value', dir:-1 };
+function buildNotifications(){
+  const s = STATE, out = [];
+  const mcapUsd = (s.mcapTao||0) * (s.taoUsd||0);
+  const ownerKey = s.meta?.owner?.ss58 || null;
+  const p1 = toF(s.p.price_change_1_day) || 0;
+  if (Math.abs(p1) >= 3)
+    out.push({ type:'Price', sev:p1>=0?'green':'red', detail:`Alpha price ${p1>=0?'up':'down'} ${Math.abs(p1).toFixed(1)}% (24h)`, value:p1/100*mcapUsd, valStr:`${p1>=0?'+':''}${p1.toFixed(1)}%`, when:'24h', days:0 });
+  (s.holders||[]).forEach(h=>{
+    if (h.d24!=null && Math.abs(h.d24) >= 25000)
+      out.push({ type:'Wallet move', sev:h.d24>=0?'green':'red', detail:`Wallet ${shortKey(h.ck)} 24h holdings move${ownerKey&&h.ck===ownerKey?' (owner)':''}`, value:h.d24, valStr:fUsdD(h.d24), when:'24h', days:0, ck:h.ck });
+  });
+  (((s.newWallets && s.newWallets.recent) || [])).filter(r=>r.days<=7 && r.usd>=10000).forEach(r=>{
+    out.push({ type:'New buyer', sev:'amber', detail:`New buyer ${shortKey(r.ck)} entered top 100`, value:r.usd, valStr:'+'+fUsd(r.usd), when:`${r.days}d ago`, days:r.days, ck:r.ck });
+  });
+  if (s.p.rank > 35)
+    out.push({ type:'Rank', sev:'red', detail:`Emission rank #${s.p.rank} (deregistration watch)`, value:0, valStr:'#'+s.p.rank, when:'now', days:0 });
+  return out;
+}
+function renderNotifications(){
+  const list = buildNotifications();
+  const k=NSORT.k, dir=NSORT.dir;
+  list.sort((a,b)=>{ let av,bv;
+    if(k==='value'){ av=Math.abs(a.value||0); bv=Math.abs(b.value||0); }
+    else if(k==='when'){ av=a.days; bv=b.days; }
+    else { av=a.type; bv=b.type; }
+    if(av<bv) return -1*dir; if(av>bv) return 1*dir; return 0; });
+  const dot = sev => `<span class="sig-dot d-${sev}"></span>`;
+  const vc = sev => sev==='green'?'green':sev==='red'?'red':'amber';
+  const tb = document.getElementById('notif-tbody');
+  tb.innerHTML = list.length ? list.map(n=>`<tr class="tr-hover">
+    <td class="ntype">${dot(n.sev)} ${n.type}</td>
+    <td>${n.ck?`<a href="https://taostats.io/coldkey/${n.ck}" target="_blank">${n.detail}</a>`:n.detail}</td>
+    <td class="r mono ${vc(n.sev)}">${n.valStr}</td>
+    <td class="r mono grey">${n.when}</td></tr>`).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:#aaa;padding:20px;">No notable changes in the latest snapshot.</td></tr>';
+  document.getElementById('notif-meta').textContent = list.length + ' event' + (list.length===1?'':'s');
 }
 
 function renderStats(){
@@ -623,6 +686,12 @@ document.querySelectorAll('th.sortable').forEach(th=>th.addEventListener('click'
   document.querySelectorAll('th.sortable .arrow').forEach(a=>a.remove());
   const ar=document.createElement('span'); ar.className='arrow'; ar.textContent=SORT.dir<0?' ▼':' ▲'; th.appendChild(ar);
   renderHoldersTable();
+}));
+document.querySelectorAll('#notif-table .nsort').forEach(th=>th.addEventListener('click',()=>{
+  const k=th.dataset.k; if(NSORT.k===k)NSORT.dir*=-1; else {NSORT.k=k; NSORT.dir=(k==='when')?1:-1;}
+  document.querySelectorAll('#notif-table .arrow').forEach(a=>a.remove());
+  const ar=document.createElement('span'); ar.className='arrow'; ar.textContent=NSORT.dir<0?' ▼':' ▲'; th.appendChild(ar);
+  renderNotifications();
 }));
 document.getElementById('alert-cfg').addEventListener('change',saveAlertCfg);
 document.getElementById('alert-cfg').addEventListener('input',saveAlertCfg);
