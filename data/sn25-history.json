@@ -1077,5 +1077,140 @@
         "alpha": 8705.827648042
       }
     ]
+  },
+  {
+    "day": "2026-06-27",
+    "ts": "2026-06-27T07:25:06.966Z",
+    "taoUsd": 213.500564843295,
+    "price": 0.003766644,
+    "rank": 67,
+    "totalHolders": 1808,
+    "holders": [
+      {
+        "ck": "5F6aRdsBHajN2NhZHBTB6ibBFu7YuZZEWruWzB8x6B6GiZ4D",
+        "usd": 436165.1900451107,
+        "alpha": 542370.011667947
+      },
+      {
+        "ck": "5FFMceCxJufR8rKeLP8s8A2YcyENrcwaQMb47A7M4oKDhbXL",
+        "usd": 264115.0922133666,
+        "alpha": 328426.268108807
+      },
+      {
+        "ck": "5GuRLEMgsMQsKSXQ9CjvQGpDxiMuSCcdkyQNz4nuoHURiuaC",
+        "usd": 159589.00214087995,
+        "alpha": 198448.411126725
+      },
+      {
+        "ck": "5FRXwb2qsEhqDQQKcm5m2MF26xTWwW65MHTEtKFFydypuqjG",
+        "usd": 48469.48647666161,
+        "alpha": 60271.650617647
+      },
+      {
+        "ck": "5F6aRdsBHajN2NhZHBTB6ibBFu7YuZZEWruWzB8x6B6GiZ4D",
+        "usd": 40545.61158340007,
+        "alpha": 50418.337660998
+      },
+      {
+        "ck": "5Gj5coRFcbf79kcAAhPqYpVosiF7nNZsZscRAHcgwemnoH4B",
+        "usd": 27041.853630166333,
+        "alpha": 33626.458057064
+      },
+      {
+        "ck": "5EFZf5pnTqLegv6gxCrb6TKBQBGz9xLJNK8x9eR273cSons6",
+        "usd": 25372.607013319004,
+        "alpha": 31550.755255252
+      },
+      {
+        "ck": "5HeNFrj2pMf3odu3FSGe7HhUNpCvEK7hrHjaUbRyWR1DPMGM",
+        "usd": 22215.501766569174,
+        "alpha": 27624.90503013
+      },
+      {
+        "ck": "5EqqEM18K9X2Zcp54WCdEwHxZPe39Pb7cXDRXxdVu1F6wFWh",
+        "usd": 21659.13747693615,
+        "alpha": 26933.067824367
+      },
+      {
+        "ck": "5EZYHCoE5rkiZDJMUrhPi23R8e9mWxJgWTusDDk5CPASuP9D",
+        "usd": 20578.766688226315,
+        "alpha": 25589.630221839
+      },
+      {
+        "ck": "5GjoDduJujeACNfPDRVBBpdEqwRRY8vAygUWjQNwwDAn5EE9",
+        "usd": 19734.619919164605,
+        "alpha": 24539.936428051
+      },
+      {
+        "ck": "5DywHvwVgfCHRKtf4BBAocyBQNPsxCGTHsQhcjBGRMkrnQG7",
+        "usd": 16931.940030950296,
+        "alpha": 21054.812997088
+      },
+      {
+        "ck": "5G9CSvpfupX1smaKmvCxb7zhMS5gHfJvAoxCEsq3t18yER5E",
+        "usd": 15148.896118537536,
+        "alpha": 18837.603624003
+      },
+      {
+        "ck": "5H8SwoePPRYaknriaC8CvgCYtXKD5MK9fRB9dvq14EV8otDt",
+        "usd": 13854.865671409003,
+        "alpha": 17228.480922847
+      },
+      {
+        "ck": "5CX9HWTx2J4VRvwR5VLnWNRVxPDHHyFZ6piyogoPUAWmCPHp",
+        "usd": 12411.156486620055,
+        "alpha": 15433.233192724
+      },
+      {
+        "ck": "5GEZEgicrmPbWr1tMLM5CaikXEkKEub9sz4mAxhqRgZX6M2j",
+        "usd": 11700.764856977328,
+        "alpha": 14549.86348505
+      },
+      {
+        "ck": "5FnumZwTeKy35oxdQw3jNKjKCkgQ8jZ4F8E7bwY6bP3ncTZP",
+        "usd": 10243.474056650462,
+        "alpha": 12737.727059449
+      },
+      {
+        "ck": "5GF7kTAkoGXWWkLp2FxwaPMyLsUPgZd3DHVLbHB3ZqKLWQ3s",
+        "usd": 9903.922710072558,
+        "alpha": 12315.496051571
+      },
+      {
+        "ck": "5EyB11xwWvViSLXGCDwZoGFCKaKfXXNG3stN3epXBqGfDR8g",
+        "usd": 9602.112873537191,
+        "alpha": 11940.196490109
+      },
+      {
+        "ck": "5Frzb41rbrzPmnmqYeox8uAC4egJsSodHx5abxw3YT8rxxps",
+        "usd": 9597.98243417808,
+        "alpha": 11935.060302122
+      },
+      {
+        "ck": "5Cq9rCPcvSrAKxqJWgDy5QnFY623XY8m1gEyZiUuegtNs1gJ",
+        "usd": 9561.734270916386,
+        "alpha": 11889.985827689
+      },
+      {
+        "ck": "5EyB11xwWvViSLXGCDwZoGFCKaKfXXNG3stN3epXBqGfDR8g",
+        "usd": 9311.862903176438,
+        "alpha": 11579.271585089
+      },
+      {
+        "ck": "5FNM2TdFcEryhMVYARyzHDSwDYYQcWSvzf4yEbmR8xYRMokm",
+        "usd": 8721.405372757348,
+        "alpha": 10845.039544175
+      },
+      {
+        "ck": "5D7Wfw3RA6qVx2McDwFYBpJaWgNskovzfmSHQTiL3p9FdebR",
+        "usd": 7846.2642601986045,
+        "alpha": 9756.804384061
+      },
+      {
+        "ck": "5EtDnqFPjDDKyEMrZGmhNwVFvvZz2tN7mEW18h95nuv89fjG",
+        "usd": 7008.959810827636,
+        "alpha": 8715.618992944
+      }
+    ]
   }
 ]
