@@ -1,44 +1,9 @@
 {
-  "generatedAt": "2026-07-08T07:12:30.716Z",
+  "generatedAt": "2026-07-09T07:36:29.883Z",
   "netuid": 25,
   "thresholdUsd": 10000,
   "fundedDays": 7,
-  "flagged": [
-    {
-      "ck": "5EsyK5dSWx49NmF8nDBDJEU9UmvJtukptmGoEuTi8bwuuGwt",
-      "rank": 5,
-      "alpha": 68218.687427484,
-      "usd": 64374.58092875627,
-      "firstFunded": "2026-07-07T19:30:24Z",
-      "days": 0,
-      "created": "2026-07-04T21:08:36Z",
-      "ageDays": 3,
-      "totalTao": 309.224667994,
-      "totalUsd": 64374.552525438696,
-      "subnetsHeld": 1,
-      "txCount": 1,
-      "sells": 1,
-      "profile": "Accumulator",
-      "profileReason": "1 subnet, 1 sell, 1 txns over 3d"
-    },
-    {
-      "ck": "5CPiu3HcdvDUFYsrNU8KWE9cEqSDc7UQyAfVuEtiixUhDos4",
-      "rank": 19,
-      "alpha": 14193.57247746,
-      "usd": 13393.768109215855,
-      "firstFunded": "2026-07-07T23:59:48Z",
-      "days": 0,
-      "created": "2026-07-07T05:09:48Z",
-      "ageDays": 1,
-      "totalTao": 64.337235649,
-      "totalUsd": 13393.759244681085,
-      "subnetsHeld": 1,
-      "txCount": 2,
-      "sells": null,
-      "profile": "Frequent trader",
-      "profileReason": "1 subnet, 0 sells, 2 txns over 1d"
-    }
-  ],
+  "flagged": [],
   "total7dUsd": 98788.08671730003,
   "total7dCount": 4
 }
