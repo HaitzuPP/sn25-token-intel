@@ -1,9 +1,44 @@
 {
-  "generatedAt": "2026-07-13T07:27:04.859Z",
+  "generatedAt": "2026-07-14T07:02:05.581Z",
   "netuid": 25,
   "thresholdUsd": 10000,
   "fundedDays": 7,
-  "flagged": [],
-  "total7dUsd": 151079.27045291392,
-  "total7dCount": 8
+  "flagged": [
+    {
+      "ck": "5CfTbm1dtictYuGMpz1TxyqSwwW1SA9U1oP2q4Ax8vMQqR7d",
+      "rank": 23,
+      "alpha": 12243.277501606,
+      "usd": 10626.563937590536,
+      "firstFunded": "2026-07-09T23:59:48Z",
+      "days": 4,
+      "created": null,
+      "ageDays": null,
+      "totalTao": null,
+      "totalUsd": null,
+      "subnetsHeld": null,
+      "txCount": null,
+      "sells": 0,
+      "profile": "Buy & hold",
+      "profileReason": "0 subnets, 0 sells, 0 txns"
+    },
+    {
+      "ck": "5F7HAs8t6FnWp4RxaNi7JJMQnowZRsbRxaNrF8WqiAPujBqM",
+      "rank": 27,
+      "alpha": 12108.999759104,
+      "usd": 10510.017447879309,
+      "firstFunded": "2026-07-13T23:59:48Z",
+      "days": 0,
+      "created": "2026-04-09T16:06:36Z",
+      "ageDays": 95,
+      "totalTao": 120.621068523,
+      "totalUsd": 24028.68368956061,
+      "subnetsHeld": 2,
+      "txCount": 22,
+      "sells": 0,
+      "profile": "Buy & hold",
+      "profileReason": "2 subnets, 0 sells, 22 txns over 95d"
+    }
+  ],
+  "total7dUsd": 172215.85183838377,
+  "total7dCount": 10
 }
