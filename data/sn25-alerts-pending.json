@@ -1,9 +1,27 @@
 {
-  "generatedAt": "2026-07-15T07:03:34.305Z",
+  "generatedAt": "2026-07-16T07:09:01.346Z",
   "netuid": 25,
   "thresholdUsd": 10000,
   "fundedDays": 7,
-  "flagged": [],
-  "total7dUsd": 151196.11415905587,
-  "total7dCount": 8
+  "flagged": [
+    {
+      "ck": "5F4nqDQDCLbPxWDxrnEqK43Lgj7HYbB5Hy1Hfv1SmCVSt5ms",
+      "rank": 7,
+      "alpha": 45789.872092432,
+      "usd": 42212.04494635607,
+      "firstFunded": "2026-07-15T23:59:48Z",
+      "days": 0,
+      "created": "2026-07-13T05:43:36.001Z",
+      "ageDays": 3,
+      "totalTao": null,
+      "totalUsd": null,
+      "subnetsHeld": null,
+      "txCount": 7,
+      "sells": 0,
+      "profile": "Frequent trader",
+      "profileReason": "0 subnets, 0 sells, 7 txns over 3d"
+    }
+  ],
+  "total7dUsd": 115639.81006743983,
+  "total7dCount": 7
 }
