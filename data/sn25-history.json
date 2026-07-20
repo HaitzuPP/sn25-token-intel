@@ -4182,5 +4182,140 @@
         "alpha": 12896.991994953
       }
     ]
+  },
+  {
+    "day": "2026-07-20",
+    "ts": "2026-07-20T07:24:02.462Z",
+    "taoUsd": 194.257063879838,
+    "price": 0.004918365,
+    "rank": 56,
+    "totalHolders": 1894,
+    "holders": [
+      {
+        "ck": "5F6aRdsBHajN2NhZHBTB6ibBFu7YuZZEWruWzB8x6B6GiZ4D",
+        "usd": 528905.9446355058,
+        "alpha": 553580.275955452
+      },
+      {
+        "ck": "5FFMceCxJufR8rKeLP8s8A2YcyENrcwaQMb47A7M4oKDhbXL",
+        "usd": 325742.5020556843,
+        "alpha": 340938.9249779
+      },
+      {
+        "ck": "5GuRLEMgsMQsKSXQ9CjvQGpDxiMuSCcdkyQNz4nuoHURiuaC",
+        "usd": 169352.8150173656,
+        "alpha": 177253.402087914
+      },
+      {
+        "ck": "5F9LSSxrEjTmnWtUNAj4tCHBQTwVgc4EjDFoSe9BeD3fN9Yi",
+        "usd": 96885.27917756277,
+        "alpha": 101405.136635668
+      },
+      {
+        "ck": "5F6aRdsBHajN2NhZHBTB6ibBFu7YuZZEWruWzB8x6B6GiZ4D",
+        "usd": 76464.0126657368,
+        "alpha": 80031.184488438
+      },
+      {
+        "ck": "5HorGnvyWLzuhW5v1TYFfJkwDRj7rPBNEw3zzCuZGEauoYjE",
+        "usd": 63860.16527889818,
+        "alpha": 66839.346912791
+      },
+      {
+        "ck": "5FRXwb2qsEhqDQQKcm5m2MF26xTWwW65MHTEtKFFydypuqjG",
+        "usd": 61566.15897605458,
+        "alpha": 64438.321446789
+      },
+      {
+        "ck": "5F4nqDQDCLbPxWDxrnEqK43Lgj7HYbB5Hy1Hfv1SmCVSt5ms",
+        "usd": 43993.215442745,
+        "alpha": 46045.571225013
+      },
+      {
+        "ck": "5CqugXQG8zDdrLtYtyMyJEVWHrUb9RjQgXRHNeUihcNQNvMK",
+        "usd": 31893.599832385822,
+        "alpha": 33381.488666451
+      },
+      {
+        "ck": "5EFZf5pnTqLegv6gxCrb6TKBQBGz9xLJNK8x9eR273cSons6",
+        "usd": 30984.78545625574,
+        "alpha": 32430.276606445
+      },
+      {
+        "ck": "5HCT4AarReToT1BKyLtJXJfSLs4zRS7dENnZ7iysqrqxXyV7",
+        "usd": 30967.144322300675,
+        "alpha": 32411.812484619
+      },
+      {
+        "ck": "5HKCvrsbsfzjmJLt1pEHEhcpLd2h1bYyG2u5gPSEFkoX1ZRX",
+        "usd": 29754.716264852523,
+        "alpha": 31142.822666363
+      },
+      {
+        "ck": "5HeNFrj2pMf3odu3FSGe7HhUNpCvEK7hrHjaUbRyWR1DPMGM",
+        "usd": 27075.85678869437,
+        "alpha": 28338.989994223
+      },
+      {
+        "ck": "5EZYHCoE5rkiZDJMUrhPi23R8e9mWxJgWTusDDk5CPASuP9D",
+        "usd": 25142.04242846952,
+        "alpha": 26314.960016639
+      },
+      {
+        "ck": "5DywHvwVgfCHRKtf4BBAocyBQNPsxCGTHsQhcjBGRMkrnQG7",
+        "usd": 20641.721340537002,
+        "alpha": 21604.691555852
+      },
+      {
+        "ck": "5HKgun2NsgGUsJkamtEXHno5HiSrjnEAWq3zEUaJicfEHCy9",
+        "usd": 19494.793504424317,
+        "alpha": 20404.25765182
+      },
+      {
+        "ck": "5G9CSvpfupX1smaKmvCxb7zhMS5gHfJvAoxCEsq3t18yER5E",
+        "usd": 18371.242145726243,
+        "alpha": 19228.290776164
+      },
+      {
+        "ck": "5H8SwoePPRYaknriaC8CvgCYtXKD5MK9fRB9dvq14EV8otDt",
+        "usd": 16918.566631501,
+        "alpha": 17707.845562547
+      },
+      {
+        "ck": "5GEZEgicrmPbWr1tMLM5CaikXEkKEub9sz4mAxhqRgZX6M2j",
+        "usd": 16462.916240089522,
+        "alpha": 17230.938331658
+      },
+      {
+        "ck": "5CPiu3HcdvDUFYsrNU8KWE9cEqSDc7UQyAfVuEtiixUhDos4",
+        "usd": 13737.836641659089,
+        "alpha": 14378.72929264
+      },
+      {
+        "ck": "5CaBWEBBmLHukJUz21qA9E5GBBFt5cita4EdZmN9gt2yZHbf",
+        "usd": 13449.91729234992,
+        "alpha": 14077.378032698
+      },
+      {
+        "ck": "5FnumZwTeKy35oxdQw3jNKjKCkgQ8jZ4F8E7bwY6bP3ncTZP",
+        "usd": 12509.14624998645,
+        "alpha": 13092.718475391
+      },
+      {
+        "ck": "5EqqEM18K9X2Zcp54WCdEwHxZPe39Pb7cXDRXxdVu1F6wFWh",
+        "usd": 12353.837999180152,
+        "alpha": 12930.164839477
+      },
+      {
+        "ck": "5DwMaVt4PW5USeQ8UoSduvFkfCqB15trmGCEJv5TMQbXogdZ",
+        "usd": 12339.830914289827,
+        "alpha": 12915.504301195
+      },
+      {
+        "ck": "5E6mEesnJyPSCT8ySapTBZzYBBCJjUsywFnZ6kXXvNM25jwp",
+        "usd": 11758.773285384817,
+        "alpha": 12307.339379051
+      }
+    ]
   }
 ]
