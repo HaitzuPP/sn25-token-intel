@@ -4722,5 +4722,140 @@
         "alpha": 17771.295020796
       }
     ]
+  },
+  {
+    "day": "2026-07-24",
+    "ts": "2026-07-24T07:12:00.638Z",
+    "taoUsd": 193.901188876861,
+    "price": 0.008198693,
+    "rank": 25,
+    "totalHolders": 2008,
+    "holders": [
+      {
+        "ck": "5F6aRdsBHajN2NhZHBTB6ibBFu7YuZZEWruWzB8x6B6GiZ4D",
+        "usd": 1010919.1993833137,
+        "alpha": 636598.785002724
+      },
+      {
+        "ck": "5FFMceCxJufR8rKeLP8s8A2YcyENrcwaQMb47A7M4oKDhbXL",
+        "usd": 543643.6516185744,
+        "alpha": 342344.757430652
+      },
+      {
+        "ck": "5GuRLEMgsMQsKSXQ9CjvQGpDxiMuSCcdkyQNz4nuoHURiuaC",
+        "usd": 282727.8961016446,
+        "alpha": 178040.17893272
+      },
+      {
+        "ck": "5CTWErcGTx3LRP7Nps1RzZx4iNxK941o4h6P4YGwgZq1ihyV",
+        "usd": 175915.88410123045,
+        "alpha": 110778.228517101
+      },
+      {
+        "ck": "5F9LSSxrEjTmnWtUNAj4tCHBQTwVgc4EjDFoSe9BeD3fN9Yi",
+        "usd": 161701.83256157103,
+        "alpha": 101827.31736055
+      },
+      {
+        "ck": "5CqugXQG8zDdrLtYtyMyJEVWHrUb9RjQgXRHNeUihcNQNvMK",
+        "usd": 119996.02698010097,
+        "alpha": 75564.224151012
+      },
+      {
+        "ck": "5HorGnvyWLzuhW5v1TYFfJkwDRj7rPBNEw3zzCuZGEauoYjE",
+        "usd": 106578.58040050468,
+        "alpha": 67114.953234413
+      },
+      {
+        "ck": "5EPDugaKeAjFNttMKRRhP5XY1Vj1AU6reca3oSTP24tSGWo7",
+        "usd": 79488.83549205076,
+        "alpha": 50055.925465139
+      },
+      {
+        "ck": "5FNEtPsseq8P9tvGBYRa73MJsVLDsa8p1YR3nmDJHbnzNLe9",
+        "usd": 74419.56378357837,
+        "alpha": 46863.689911104
+      },
+      {
+        "ck": "5F4nqDQDCLbPxWDxrnEqK43Lgj7HYbB5Hy1Hfv1SmCVSt5ms",
+        "usd": 73443.01881516122,
+        "alpha": 46248.737360284
+      },
+      {
+        "ck": "5FRXwb2qsEhqDQQKcm5m2MF26xTWwW65MHTEtKFFydypuqjG",
+        "usd": 55290.00776210158,
+        "alpha": 34817.37391636
+      },
+      {
+        "ck": "5EFZf5pnTqLegv6gxCrb6TKBQBGz9xLJNK8x9eR273cSons6",
+        "usd": 51711.64893660082,
+        "alpha": 32564.000074096
+      },
+      {
+        "ck": "5FEbc3ijjz8EEES4iUMSvng9nqr7gjCdP7pq9WAqHkVL9Yu8",
+        "usd": 45632.897837386176,
+        "alpha": 28736.072415326
+      },
+      {
+        "ck": "5DPZ1qHSZkLwxv7NWdzmp1hsLC8YXR5nkWejZ1BCKoHA294W",
+        "usd": 44829.91791793801,
+        "alpha": 28230.417718612
+      },
+      {
+        "ck": "5EZYHCoE5rkiZDJMUrhPi23R8e9mWxJgWTusDDk5CPASuP9D",
+        "usd": 41973.65575985774,
+        "alpha": 26431.764551667
+      },
+      {
+        "ck": "5ERfDw6K3GmQqwqsEG6foFtu7VsYGifPi556UJKQsBnfbHKN",
+        "usd": 39214.06085131712,
+        "alpha": 24693.984947833
+      },
+      {
+        "ck": "5Dkushsxtc8AdCf287MtTYHQv9DoZeBRpttUpBtmyFhGy3uR",
+        "usd": 39190.79042100567,
+        "alpha": 24679.331029178
+      },
+      {
+        "ck": "5CX8QbutZXdWaPk1APu9ToTNFYARs4kQqNKK3dAekL6ojBvC",
+        "usd": 38033.72610723188,
+        "alpha": 23950.701345684
+      },
+      {
+        "ck": "5CVPEEDrsuaDJWqD1c2aZWEBg6iq84NmWWKtpfMPV7U9UPoZ",
+        "usd": 36024.095509599254,
+        "alpha": 22685.191305344
+      },
+      {
+        "ck": "5DywHvwVgfCHRKtf4BBAocyBQNPsxCGTHsQhcjBGRMkrnQG7",
+        "usd": 34450.363670083796,
+        "alpha": 21694.176615469
+      },
+      {
+        "ck": "5HeNFrj2pMf3odu3FSGe7HhUNpCvEK7hrHjaUbRyWR1DPMGM",
+        "usd": 33890.92143823893,
+        "alpha": 21341.883133098
+      },
+      {
+        "ck": "5CUfxr6n1Gas9gE8dbAibngMETu3CTAnh1qr1cUCbsuHVG9v",
+        "usd": 33026.664227728696,
+        "alpha": 20797.640734281
+      },
+      {
+        "ck": "5DMHDFHqXKxGq9mHLC5f9QiVXLAy7WWJmdgri3QD3L3PbLCe",
+        "usd": 32275.31520134112,
+        "alpha": 20324.499183829
+      },
+      {
+        "ck": "5G9CSvpfupX1smaKmvCxb7zhMS5gHfJvAoxCEsq3t18yER5E",
+        "usd": 30595.860156008235,
+        "alpha": 19266.908189491
+      },
+      {
+        "ck": "5F48zzjKv5ZQF1j7KA8DuU7o4gspqvNNVqYXq5u4QaVzvVtC",
+        "usd": 29135.144919301798,
+        "alpha": 18347.062621704
+      }
+    ]
   }
 ]
